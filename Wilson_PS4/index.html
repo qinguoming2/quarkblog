@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="zh">
+<head>
+    <meta name="generator" content="Quarkdown">
+    <meta charset="UTF-8">
+    <meta name="description" content="a blog demo">
+    <meta name="author" content="qinguoming">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>blog</title>
+    <script src="../script/quarkdown.js"></script>
+    <script>const capabilities = window.quarkdownCapabilities</script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../theme/theme.css">
+
+    <style>
+
+        body {
+        }
+
+        .page-break {
+            break-before: always;
+        }
+
+        .quarkdown-plain .page-break {
+            break-before: avoid;
+            break-after: avoid;
+        }
+
+        body.quarkdown-plain.quarkdown-plain {
+        }
+
+        body.quarkdown-slides.quarkdown-slides .reveal {
+        }
+
+        @page {
+            size: auto auto;
+            margin: 0;
+        }
+
+        p {
+        }
+    </style>
+    <script>
+        const doc = new PlainDocument();
+        prepare(doc);
+    </script>
+</head>
+<body class="quarkdown quarkdown-plain">
+<aside id="margin-area-left" class="margin-area"></aside>
+<main>
+    <div class="page-break" data-hidden=""></div><h1 id="femwilson非协调单元在ps4的推导" data-location="1">Fem_Wilson非协调单元在PS4的推导</h1><figure><img src="media/img-20250607171757@-819936520.png" alt="Img" /></figure><p>Ps4单元的位移自由度：</p><ul><li><p>节点自由度：ux,uy</p></li><li><p>单元自由度：$\delta^e=[u1x,u1y,....u4x,u4y]^T$</p></li></ul><p>但是在承受弯曲载荷的时候，存在shear locking的问题。Wilson非协调单元通过在每个坐标方向上增加2个内部自由度，解决该问题：</p><figure><img src="media/img-20250608121410@-658164786.png" alt="Img" /></figure><h2 id="位移插值" data-location="1.1">位移插值</h2><figure><img src="media/img-20250608121629@1154145432.png" alt="Img" /></figure><h2 id="几何插值" data-location="1.2">几何插值</h2><figure><img src="media/img-20250607172554@-854699310.png" alt="Img" /></figure><h2 id="单元形函数" data-location="1.3">单元形函数</h2><figure><img src="media/img-20250608121909@-533472225.png" alt="Img" /></figure><h2 id="应变-位移关系" data-location="1.4">应变-位移关系</h2><figure><img src="media/img-20250608123108@145859666.png" alt="Img" /></figure><figure><img src="media/img-20250608123433@-1405296049.png" alt="Img" /></figure><h2 id="应力-应变关系" data-location="1.5">应力-应变关系</h2><figure><img src="media/img-20250607174000@1592148783.png" alt="Img" /></figure><h2 id="雅可比矩阵计算jxieta" data-location="1.6">雅可比矩阵计算$J(\xi,\eta)$</h2><figure><img src="media/img-20250607214654@534495213.png" alt="Img" /></figure><figure><img src="media/img-20250607214710@1303457964.png" alt="Img" /></figure><h2 id="最小势能原理推到单元刚度矩阵" data-location="1.7">最小势能原理推到单元刚度矩阵</h2><p>以下是PS4单元的刚度矩阵推导：</p><figure><img src="media/img-20250607220005@-826586256.png" alt="Img" /></figure><p>加入wilson内部自由度后，由于内部自由度不会影响外力功，因此只有修改单元刚度矩阵部分：</p><figure><img src="media/img-20250608125159@-521221236.png" alt="Img" /></figure><p>进一步，将内部自由度凝聚：</p><figure><img src="media/img-20250608125529@-1352379179.png" alt="Img" /></figure><p>所以，Wilson非协调单元的刚度矩阵为：</p><figure><img src="media/img-20250608125624@-469462383.png" alt="Img" /></figure><h2 id="高斯积分计算单元刚度矩阵" data-location="1.8">高斯积分计算单元刚度矩阵</h2><figure><img src="media/img-20250607220522@-629480336.png" alt="Img" /></figure><h2 id="体积力等效为节点力" data-location="1.9">体积力等效为节点力</h2><figure><img src="media/img-20250607220947@-1314680775.png" alt="Img" /></figure><h2 id="单元质量矩阵" data-location="1.10">单元质量矩阵</h2><figure><img src="media/img-20250607221452@311654605.png" alt="Img" /></figure><h2 id="surface-stress-force-加载等效为节点力" data-location="1.11">surface stress force 加载等效为节点力</h2><p>对于一个PS4单元,假设有s条单元边收到单元表面力的作用。所以整个单元的等效节点力$F_{trac}^e$为：</p><figure><img src="media/img-20250608110333@2124917681.png" alt="Img" /></figure><figure><img src="media/img-20250608110320@2093255535.png" alt="Img" /></figure><figure><img src="media/img-20250608111922@573295604.png" alt="Img" /></figure><p>对于局部坐标s有：</p><figure><img src="media/img-20250608112124@-485067345.png" alt="Img" /></figure><p>以 表面力P作用在3-4 edge为例子：</p><figure><img src="media/img-20250608111704@-1257377738.png" alt="Img" /></figure>
+</main>
+<aside id="margin-area-right" class="margin-area"></aside>
+</body>
+</html>
