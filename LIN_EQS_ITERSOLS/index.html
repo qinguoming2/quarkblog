@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta name="generator" content="Quarkdown">
+    <meta charset="UTF-8">
+    <meta name="description" content="a blog demo">
+    <meta name="author" content="qinguoming">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="quarkdown:root-path" content="..">
+    <title>blog</title>
+    <script src="../script/quarkdown.js"></script>
+    <script>const capabilities = window.quarkdownCapabilities</script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../theme/theme.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.9.0/highlightjs-line-numbers.min.js"></script>
+    <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
+    <link href="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.css" rel="stylesheet">
+    <script>capabilities.code = true;</script>
+    <link href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" rel="stylesheet" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" defer="true" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script>capabilities.math = true;
+
+window.texMacros = {}</script>
+    <style>@font-face { font-family: '-503305824'; src: local('Consolas'); }
+
+body {
+    --qd-code-custom-font: '-503305824';
+    --qd-main-font-size: 12.0pt;}
+
+body.quarkdown-plain.quarkdown-plain,
+body.quarkdown-docs.quarkdown-docs {
+}
+
+body.quarkdown-slides.quarkdown-slides .reveal {
+}
+
+@page {
+    size: auto auto;
+    margin: 0;}
+
+p {
+}</style>
+    <script>prepare(new PlainDocument());</script>
+<template id="sidebar-template"><nav class="sidebar" role="doc-toc"><ol><li data-target-id="线性方程组求解---迭代解法" data-depth="1"><a href="#线性方程组求解---迭代解法">线性方程组求解 - 迭代解法</a><ol><li data-target-id="_1-范数和条件数" data-depth="2"><a href="#_1-范数和条件数">1. 范数和条件数</a><ol><li data-target-id="_11-向量和矩阵的范数" data-depth="3"><a href="#_11-向量和矩阵的范数">1.1 向量和矩阵的范数</a></li><li data-target-id="_12-条件数和扰动分析" data-depth="3"><a href="#_12-条件数和扰动分析">1.2 条件数和扰动分析</a></li></ol></li><li data-target-id="_2-基本迭代法" data-depth="2"><a href="#_2-基本迭代法">2. 基本迭代法</a><ol><li data-target-id="_21-迭代法基本思路" data-depth="3"><a href="#_21-迭代法基本思路">2.1 迭代法基本思路</a></li><li data-target-id="_22-雅可比迭代法" data-depth="3"><a href="#_22-雅可比迭代法">2.2 雅可比迭代法</a></li><li data-target-id="_23-高斯赛德尔迭代法" data-depth="3"><a href="#_23-高斯赛德尔迭代法">2.3 高斯–赛德尔迭代法</a></li><li data-target-id="_24-超松弛-sor-迭代法" data-depth="3"><a href="#_24-超松弛-sor-迭代法">2.4 超松弛 (SOR) 迭代法</a></li><li data-target-id="_25-迭代的收敛性分析和误差估计" data-depth="3"><a href="#_25-迭代的收敛性分析和误差估计">2.5 迭代的收敛性分析和误差估计</a></li></ol></li><li data-target-id="_3-不定常迭代法" data-depth="2"><a href="#_3-不定常迭代法">3. 不定常迭代法</a><ol><li data-target-id="_31-最速下降法" data-depth="3"><a href="#_31-最速下降法">3.1 最速下降法</a></li><li data-target-id="_32-共轭梯度法" data-depth="3"><a href="#_32-共轭梯度法">3.2 共轭梯度法</a></li><li data-target-id="_33-广义极小残量法" data-depth="3"><a href="#_33-广义极小残量法">3.3 广义极小残量法</a></li></ol></li><li data-target-id="_4-预处理技术" data-depth="2"><a href="#_4-预处理技术">4. 预处理技术</a></li><li data-target-id="_5-总结" data-depth="2"><a href="#_5-总结">5. 总结</a></li><li data-target-id="_6-习题" data-depth="2"><a href="#_6-习题">6. 习题</a></li></ol></li><li data-target-id="线性方程组迭代解法的程序实现" data-depth="1"><a href="#线性方程组迭代解法的程序实现">线性方程组迭代解法的程序实现</a><ol><li data-target-id="_7-jacobigssor迭代法-code" data-depth="2"><a href="#_7-jacobigssor迭代法-code">7. jacobi,GS,SOR迭代法-code</a></li><li data-target-id="_8-正定对称线性方程组的不定常迭代最速下降法共轭梯度法-代码" data-depth="2"><a href="#_8-正定对称线性方程组的不定常迭代最速下降法共轭梯度法-代码">8. 正定对称线性方程组的不定常迭代:最速下降法,共轭梯度法-代码</a></li><li data-target-id="_9-数值实验" data-depth="2"><a href="#_9-数值实验">9. 数值实验</a></li></ol></li></ol></nav>
+</template>  </head>
+  <body class="quarkdown quarkdown-plain">
+    <aside class="margin-area" id="margin-area-left"></aside>
+    <main><div class="page-break" data-hidden=""></div><h1 id="table-of-contents">目录</h1><nav role="table-of-contents" data-role="table-of-contents"><ol><li data-target-id="线性方程组求解---迭代解法" data-depth="1"><a href="#线性方程组求解---迭代解法">线性方程组求解 - 迭代解法</a><ol><li data-target-id="_1-范数和条件数" data-depth="2"><a href="#_1-范数和条件数">1. 范数和条件数</a><ol><li data-target-id="_11-向量和矩阵的范数" data-depth="3"><a href="#_11-向量和矩阵的范数">1.1 向量和矩阵的范数</a></li><li data-target-id="_12-条件数和扰动分析" data-depth="3"><a href="#_12-条件数和扰动分析">1.2 条件数和扰动分析</a></li></ol></li><li data-target-id="_2-基本迭代法" data-depth="2"><a href="#_2-基本迭代法">2. 基本迭代法</a><ol><li data-target-id="_21-迭代法基本思路" data-depth="3"><a href="#_21-迭代法基本思路">2.1 迭代法基本思路</a></li><li data-target-id="_22-雅可比迭代法" data-depth="3"><a href="#_22-雅可比迭代法">2.2 雅可比迭代法</a></li><li data-target-id="_23-高斯赛德尔迭代法" data-depth="3"><a href="#_23-高斯赛德尔迭代法">2.3 高斯–赛德尔迭代法</a></li><li data-target-id="_24-超松弛-sor-迭代法" data-depth="3"><a href="#_24-超松弛-sor-迭代法">2.4 超松弛 (SOR) 迭代法</a></li><li data-target-id="_25-迭代的收敛性分析和误差估计" data-depth="3"><a href="#_25-迭代的收敛性分析和误差估计">2.5 迭代的收敛性分析和误差估计</a></li></ol></li><li data-target-id="_3-不定常迭代法" data-depth="2"><a href="#_3-不定常迭代法">3. 不定常迭代法</a><ol><li data-target-id="_31-最速下降法" data-depth="3"><a href="#_31-最速下降法">3.1 最速下降法</a></li><li data-target-id="_32-共轭梯度法" data-depth="3"><a href="#_32-共轭梯度法">3.2 共轭梯度法</a></li><li data-target-id="_33-广义极小残量法" data-depth="3"><a href="#_33-广义极小残量法">3.3 广义极小残量法</a></li></ol></li><li data-target-id="_4-预处理技术" data-depth="2"><a href="#_4-预处理技术">4. 预处理技术</a></li><li data-target-id="_5-总结" data-depth="2"><a href="#_5-总结">5. 总结</a></li><li data-target-id="_6-习题" data-depth="2"><a href="#_6-习题">6. 习题</a></li></ol></li><li data-target-id="线性方程组迭代解法的程序实现" data-depth="1"><a href="#线性方程组迭代解法的程序实现">线性方程组迭代解法的程序实现</a><ol><li data-target-id="_7-jacobigssor迭代法-code" data-depth="2"><a href="#_7-jacobigssor迭代法-code">7. jacobi,GS,SOR迭代法-code</a></li><li data-target-id="_8-正定对称线性方程组的不定常迭代最速下降法共轭梯度法-代码" data-depth="2"><a href="#_8-正定对称线性方程组的不定常迭代最速下降法共轭梯度法-代码">8. 正定对称线性方程组的不定常迭代:最速下降法,共轭梯度法-代码</a></li><li data-target-id="_9-数值实验" data-depth="2"><a href="#_9-数值实验">9. 数值实验</a></li></ol></li></ol></nav><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://qinguoming.pages.dev/">返回 主页</a></p></div><div class="page-break" data-hidden=""></div><h1 id="线性方程组求解---迭代解法">线性方程组求解 - 迭代解法</h1><blockquote><p><a href="https://www.cnblogs.com/aksoam/p/18345515">https://www.cnblogs.com/aksoam/p/18345515</a></p></blockquote><h2 id="_1-范数和条件数">1. 范数和条件数</h2><p>线性方程组的解是一个向量 , 称为<strong>解向量</strong>. 近似解向量与精确解向量之差成为近似解的误差向量. <strong>范数</strong>:衡量向量和矩阵大小的度量概念</p><h3 id="_11-向量和矩阵的范数">1.1 向量和矩阵的范数</h3><figure><img src="media/2026433-20240806152837862-1763506761@866384057.png" alt="img" /></figure><figure><img src="media/2026433-20240806152923037-3903233@-1950854814.png" alt="img" /></figure><blockquote><p>矩阵的 F 范数是向量 2 范数的直接推广 , 矩阵的 2 范数的计算是 <formula>A^T A</formula> 的谱半径的开方 , 所以又称为谱范数</p></blockquote><p>对于矩阵A和向量x,如果满足:</p><formula data-block="">\|Ax\|\leqslant\|A\|\cdot\|x\|</formula><p>则称<strong>向量范数和矩阵范数相容</strong>.常用的范数相容关系有:</p><formula data-block="">\begin{gathered}
+\|Ax\|_{1}\leqslant \|A\|_1\cdot\|x\|_1, \\
+\|Ax\|_{\infty}\leqslant \|A\|_\infty\cdot\|x\|_\infty, \\
+\|Ax\|_{2}\leqslant \|A\|_{2}\cdot\|x\|_{2}, \\
+\|Ax\|_{2}\leqslant \|A\|_{F}\cdot\|x\|_{2}. 
+\end{gathered}</formula><h3 id="_12-条件数和扰动分析">1.2 条件数和扰动分析</h3><p>对于线性方程组:</p><formula data-block="">Ax=b</formula><p>解向量x由A,x决定.当A,b受到微小扰动时,对解x的扰动不一定也是微小的.无论方程组中的系数矩阵 A 有扰动 , 还是右端 b 有扰动 , 解 x 的相对误差除了受相应扰动的相对误差以外 , 还与 <formula>||A||*||A^{-1}||</formula> 的大小有关</p><figure><img src="media/2026433-20240806154430570-67994860@69785591.png" alt="img" /></figure><p>对于一个确定的线性方程组 , 若系数矩阵A的条件数相对地小 , 就称方程组是良态的 ,矩阵为良态矩阵 ; 反之 , 条件数相对地大 , 就称方程组病态 , 矩阵为病态矩阵.</p><p>使用稳定方法求病态方程组的解,结果可能很差.</p><figure><img src="media/2026433-20240806154453380-1447697293@-1238573128.png" alt="img" /></figure><h2 id="_2-基本迭代法">2. 基本迭代法</h2><h3 id="_21-迭代法基本思路">2.1 迭代法基本思路</h3><p>对于线性方程组:</p><formula data-block="">Ax=b</formula><p>其中, <formula>A\in \mathbb{R}^{n\times n}</formula> , <formula>\boldsymbol{b} \in \mathbb{R}^n</formula> 已知,求解 <formula>x\in\mathbb{R}^n</formula></p><p>假定A以下分解,M为非奇异方阵:</p><formula data-block="">A=M-N</formula><p>则有以下关系:</p><formula data-block="">Mx=Nx+b 或者 x=Bx+g</formula><p>其中, <formula>B=M^{-1}N , g=M^{-1}b.</formula> 从而可以建立迭代公式:</p><formula data-block="">x^{(k+1)}=Bx^{(k)}+g\tag{1}</formula><p>给定初始向量 <formula>x^{(0)}</formula> ,进行迭代,就可以得向量序列 <formula>{x^{(k)}}</formula> .若该序列收敛于一个确定的值 <formula>x^*</formula>.则 <formula>x^{*}=Bx^{*}+g</formula> ,也就是 <formula>Ax^*=b</formula> , <formula>x^*</formula> 就是线性方程组的解.</p><p>初值 <formula>x^{(0)}</formula> 可以任意取,但一般取 <formula>x^{(0)}=0</formula> 或 <formula>x^{(0)}=b</formula></p><p>判断是否收敛的标准:</p><p>计算出 <formula>x^{k+1}</formula> 后,计算 <formula>error=\frac{||b-A*x^{k+1}||}{||b||}</formula> ,若 <formula>error</formula> 小于某个给定的阈值,则认为迭代收敛.</p><p>以上就是<strong>解线性方程组的基本迭代解法</strong></p><p>在公式(1)中,为了避免B,g中的求逆计算 , 我们可以按如下方式进行迭代:</p><formula data-block="">Mx^{(k+1)}=Nx^{(k)}+b.\tag{2}</formula><p>只是,这就每次迭代就需要求解一个系数矩阵为 M 的线性方程组 <formula>Mx^{(k+1)}=b'</formula> .如果M矩阵具有特殊性质(对角阵,上三角阵等),这样的方程组易于求解.如:</p><formula data-block="">A=D-L-U</formula><p>分别是对角矩阵、严格下三角矩阵和严格上三角矩阵:</p><formula data-block="">\begin{gathered}
+D=\mathrm{diag}(a_{11},a_{22},\cdots,a_{nn}), \\
+\boldsymbol{L}=-\begin{pmatrix}0&0&\cdots&0\\a_{21}&0&\cdots&0\\\vdots&\ddots&\ddots&\vdots\\a_{n1}&a_{n2}&\cdots&0\end{pmatrix}, \\
+\boldsymbol{U}=-\left(\begin{matrix}{0}&{{a_{12}}}&{\cdots}&{{a_{1n}}}\\{\vdots}&{\ddots}&{\ddots}&{\vdots}\\{0}&{\ddots}&{\ddots}&{{a_{n-1,n}}}\\{0}&{0}&{\cdots}&{0}\\\end{matrix}\right), 
+\end{gathered}</formula><p>下面介绍三种基本迭代解法:<strong>雅可比迭代法、高斯–赛德尔迭代法和SOR迭代法</strong>, 并对它们的适用性、收敛性质和收敛速度</p><h3 id="_22-雅可比迭代法">2.2 雅可比迭代法</h3><p>在公式(2)中,取 <formula>M=D</formula> , <formula>N=L+U</formula> ,就可以得到雅可比迭代法的迭代公式:</p><formula data-block="">D\boldsymbol{x}^{(k+1)}=(\boldsymbol{L}+\boldsymbol{U})\boldsymbol{x}^{(k)}+\boldsymbol{b}.\tag{3}</formula><figure><img src="media/2026433-20240806161902487-633199648@-1508840396.png" alt="img" /></figure><h3 id="_23-高斯赛德尔迭代法">2.3 高斯–赛德尔迭代法</h3><p>高斯-赛德尔迭代法(简称GS迭代法)的迭代格式为:</p><formula data-block="">Dx^{(k+1)}=Lx^{(k+1)}+Ux^{(k)}+b.\\(D-L)x^{(k+1)}=Ux^{(k)}+b.</formula><figure><img src="media/2026433-20240806163013665-1741827831@422838382.png" alt="img" /></figure><h3 id="_24-超松弛-sor-迭代法">2.4 超松弛 (SOR) 迭代法</h3><p>GS 迭代格式可以改写成:</p><formula data-block="">\begin{aligned}x^{(k+1)}&=D^{-1}(Lx^{(k+1)}+Ux^{(k)}+b)\\&=\boldsymbol{x}^{(k)}+\boldsymbol{D}^{-1}(\boldsymbol{L}\boldsymbol{x}^{(k+1)}+\boldsymbol{U}\boldsymbol{x}^{(k)}-\boldsymbol{D}\boldsymbol{x}^{(k)}+\boldsymbol{b}).\end{aligned}</formula><p>为了加快迭代的收敛速度 , 将上式等号右端的第二项 <formula>D^{-1}(Lx^{(k+1)}+Ux^{(k)}-Dx^{(k)}+b)</formula> 看成是修正量,引入超松弛因子 <formula>\omega</formula> , 并将修正量乘上 <formula>\omega</formula> , 得到修正后的迭代格式:</p><formula data-block="">x^{(k+1)}=\boldsymbol{x}^{(k)}+\omega\boldsymbol{D}^{-1}(\boldsymbol{L}\boldsymbol{x}^{(k+1)}+\boldsymbol{U}\boldsymbol{x}^{(k)}-\boldsymbol{D}\boldsymbol{x}^{(k)}+\boldsymbol{b}),\\x^{(k+1)}=(\boldsymbol{D}-\omega\boldsymbol{L})^{-1}[(1-\omega)\boldsymbol{D}+\omega\boldsymbol{U}]\boldsymbol{x}^{(k)}+\omega(\boldsymbol{D}-\omega\boldsymbol{L})^{-1}\boldsymbol{b}.</formula><p>这就是逐次超松弛迭代法 , 简称SOR迭代法.</p><figure><img src="media/2026433-20240806163810508-1207795792@-431727244.png" alt="img" /></figure><h3 id="_25-迭代的收敛性分析和误差估计">2.5 迭代的收敛性分析和误差估计</h3><ul><li>定理 6.2.10</li></ul><p>迭代格式 (1), 给定任意的初值 x(0) , 有下列收敛结果和误差估计:</p><ol><li>迭代格式 (1) 收敛的充要条件为谱半径 <formula>\rho(B) < 1</formula></li><li>若 <formula>||B||<1</formula> ,则有误差估计:</li></ol><formula data-block="">\|x^{(k)}-x^*\|\leqslant\frac{\|B\|^k}{1-\|B\|}\|x^{(1)}-x^{(0)}\|</formula><formula data-block="">\|x^{(k)}-x^*\|\leqslant\frac{\|B\|}{1-\|B\|}\|x^{(k)}-x^{(k-1)}\|.\tag{4}</formula><p>其中 , <formula>x^∗</formula> 为 <formula>Ax=b</formula> 的真解</p><ul><li>定理 6.2.11</li></ul><p>若 A 是严格对角占优或不可约弱对角占优矩阵 , 则雅可比迭代和 GS 迭代都收敛.</p><ul><li>定理 6.2.12</li></ul><p>若 A 是对称正定矩阵 , 则雅可比迭代收敛的充要条件是 $2D − A$ 也是对称正定矩阵</p><ul><li>定理 6.2.13</li></ul><p>SOR 迭代收敛的必要条件是 0 &lt; ω &lt; 2.</p><ul><li>定理 6.2.14</li></ul><p>设系数矩阵 A 对称正定 , 则 0 &lt; ω &lt; 2 时 SOR 迭代收敛</p><h2 id="_3-不定常迭代法">3. 不定常迭代法</h2><blockquote><p>本节将介绍两类最基本的不定常迭代方法:一类是求解对称正定线性方程组的<strong>最速下降法和共轭梯度法</strong>; 另一类是求解不对称线性方程组的<strong>广义极小残量法</strong></p></blockquote><h3 id="_31-最速下降法">3.1 最速下降法</h3><figure><img src="media/2026433-20240806170352298-1946254346@-715700602.png" alt="img" /></figure><p>对于 <formula>x</formula> ,定义n元二次函数: <formula>\varphi:\mathbb{R}^{n}\to\mathbb{R}</formula></p><formula data-block="">\varphi(x)=\frac12(\boldsymbol{x},\boldsymbol{A}\boldsymbol{x})-(\boldsymbol{x},\boldsymbol{b}),\text{其中,}(x,y)=\sum_{i=1}^{n}x_{i}y_{i}.</formula><ul><li>定理 6.3.1</li></ul><p>设 A 对称正定 , <formula>x^∗</formula> 是方程组 <formula>Ax = b</formula> 的解的充要条件是 <formula>x^∗</formula> 为二次函数ϕ(x)的极小值点 , 即</p><formula data-block="">\varphi(\boldsymbol{x}^*)=\min_{\boldsymbol{x}\in R^n}\varphi(\boldsymbol{x}).</formula><p>定理 6.3.1 将求解方程组 <formula>Ax = b</formula> 的问题转化为求函数 ϕ(x) 的为唯一极小点的问题</p><p>为了找到 ϕ(x) 的极小点 <formula>x^∗</formula> ,可以从任一点 <formula>x^(k)</formula> 出发 , 沿某一指定的方向 <formula>y^{(k)}\in\mathbb{R}^n</formula> 搜索下一个近似点 <formula>x^{(k+1)}=x^{(k)}+\alpha_{k}y^{(k)},</formula> 使得 <formula>\varphi(x^{(k+1)})</formula> 在该方向上达到极小值.</p><p>选择 <formula>y^{(k)}</formula> 的方式不同时 , 将会得到不同的算法.</p><p>令 <formula>y^(k)</formula> 为某一搜索方向, <formula>r^{(k)}=b-Ax^{(k)}</formula> 为 <formula>x^{(k)}</formula> 对应的残量.则有:</p><formula data-block="">\varphi(\boldsymbol{x}^{(k)}+a\boldsymbol{y}^{(k)})=\varphi(\boldsymbol{x}^{(k)})-a(\boldsymbol{y}^{(k)},\boldsymbol{r}^{(k)})+\frac12a^2(\boldsymbol{y}^{(k)},\boldsymbol{A}\boldsymbol{y}^{(k)}).\tag{5}</formula><p>根据二次函数性质可知:</p><formula data-block="">a_k=\frac{(\boldsymbol{y}^{(k)},\boldsymbol{r}^{(k)})}{(\boldsymbol{y}^{(k)},\boldsymbol{A}\boldsymbol{y}^{(k)})}.</formula><p><formula>a_k</formula> 是 <formula>\varphi(x^{(k)}+a\boldsymbol{y}^{(k)})</formula> 的极小点.将 <formula>a_k</formula> 代入上式(5),有:</p><formula data-block="">\varphi(\boldsymbol{x}^{(k)}+a_k\boldsymbol{y}^{(k)})-\varphi(\boldsymbol{x}^{(k)})=-\frac{1}{2}\frac{(\boldsymbol{y}^{(k)},\boldsymbol{r}^{(k)})^2}{(\boldsymbol{y}^{(k)},\boldsymbol{A}\boldsymbol{y}^{(k)})}.\tag{6}</formula><formula data-block="">\text{当 }(\boldsymbol{r}^{(k)},\boldsymbol{y}^{(k)})\neq0,\text{ 即 }\boldsymbol{y}^{(k)}\text{ 不与 }\boldsymbol{r}^{(k)}\text{ 正交时, }\varphi(\boldsymbol{x}^{(k+1)})<\varphi(\boldsymbol{x}^{(k)})\text{ 成立}.</formula><p>从公式(6)可以看出,每次迭代后 <formula>\varphi(x^{(k+1)})</formula> 的下降量只取决于 <formula>y^{(k)}</formula> 的方向,而与 <formula>y^{(k)}</formula> 无关.函数 ϕ(x) 在点 <formula>x^{(k)}</formula> 处下降最快的方向应该是在该点的负梯度方向,即 <formula>r^{(k)}</formula></p><p>每次迭代,取 <formula>y^{(k)}=r^{(k)}</formula> 作为搜索方向,然后构造 <formula>x^{(k+1)}=x^{(k)}+a_k r^{(k)}</formula> ,可以计算出 <formula>\varphi(x)</formula> 的极小点的最速下降法</p><figure><img src="media/2026433-20240806173409508-2143168234@-1097257836.png" alt="img" /></figure><h4 id="_311-最速下降法的误差估计">3.1.1 最速下降法的误差估计</h4><ul><li>定理 6.3.4</li></ul><p>设 A 是 n 阶实对称正定矩阵, <formula>\lambda_{1}</formula> 和 <formula>\lambda_{n}</formula> 分别是A的最大,最小特征值.则由最速下降法得到的迭代序列 <formula>{x^{(k)}}</formula> 满足误差估计:</p><formula data-block="">\left\|x^{(k)}-x^*\right\|_A\leqslant\left[\frac{\lambda_1-\lambda_n}{\lambda_1+\lambda_n}\right]^k\left\|x^{(0)}-x^*\right\|_A.\tag{7}</formula><p>由误差估计式(7) 可得最速下降法的收敛性.不过 , 当 <formula>\lambda_{1}</formula> 远远大于 <formula>\lambda_{n}</formula> 时, <formula>\frac{\lambda_1-\lambda_n}{\lambda_1+\lambda_n}\approx1</formula> ,这时 , 最速下降法的<strong>收敛速度将会很慢</strong>.</p><h3 id="_32-共轭梯度法">3.2 共轭梯度法</h3><p>对上述最速下降法作一简单分析,可以发现: <strong>负梯度方向虽为局部最优的搜索方向 , 但从整体来看并非最优</strong>. 这就促使人们去寻找更好的搜索方向 , 当然 , 希望每一步确定新的搜索方向时付出的代价也不要太大.</p><p>共轭梯度法的思想:仍设 A 对称正定 , 我们还是采用一维极小搜索的概念 .但不再沿负梯度方向 <formula>r^{(0)}, r^{(1)}, \cdots, r^{(k)}</formula> 搜素,而是要另找一组方向 <formula>p^{(0)},p^{(1)},\cdots,p^{(k)}</formula> ,使得进行 k 次一维搜索后 , 求得近似解 <formula>x^{(k)}</formula></p><p>对一维极小问题 <formula>\min_{\alpha}\varphi(\boldsymbol{x}^{(k)}+\alpha\boldsymbol{p}^{(k)})</formula> ,令:</p><formula data-block="">\frac{\mathrm{d}}{\mathrm{d}\alpha}\varphi(p^{(k)}+\alpha p^{(k)})=0</formula><p>可得:</p><formula data-block="">\alpha=\alpha_k=\frac{(r^{(k)},p^{(k)})}{(\boldsymbol{A}\boldsymbol{p}^{(k)},\boldsymbol{p}^{(k)})}.\tag{8}</formula><p>从而,下一步的近似解和对应的残量分别为:</p><formula data-block="">\boldsymbol{x}^{(k+1)}=\boldsymbol{x}^{(k)}+\alpha_{k}\boldsymbol{p}^{(k)},\\\boldsymbol{r}^{(k+1)}=\boldsymbol{b}-\boldsymbol{A}\boldsymbol{x}^{(k+1)}=\boldsymbol{r}^{(k)}-\alpha_{k}\boldsymbol{A}\boldsymbol{p}^{(k)}.\tag{9}</formula><ul><li>定义 6.3.5</li></ul><p>A 对称正定,若 <formula>\mathbb{R}^n</formula> 中向量组 <formula>\{p^{(0)},p^{(1)},\cdots,p^{(l)}\}</formula> 满足:</p><formula data-block="">(Ap^{(i)},p^{(j)})=0,\quad i\neq j,/tag{10}</formula><p>则该向量组为 <formula>\mathbb{R}^n</formula> 中的一个A-共轭向量组,或者称A-正交向量组,或称这些向量是<strong>A-共轭的</strong></p><p>第一次迭代时, , 可以令 <formula>p^{(0)} = r^{(0)}</formula> . <formula>k>0</formula> 时,不妨设 <formula>p^{(k)}=r^{(k)}+\beta_{k-1}p^{(k-1)}</formula> ,利用 <formula>(p^{(k)},Ap^{(k-1)})=0,</formula> 可以求出:</p><formula data-block="">\beta_{k-1}=-\frac{(\boldsymbol{r}^{(k)},\boldsymbol{Ap}^{(k-1)})}{(\boldsymbol{p}^{(k-1)},\boldsymbol{Ap}^{(k-1)})}.</formula><p>这样的得到的 <formula>p^{(k)},p^{(k-1)}</formula> 是<strong>A-共轭的</strong></p><figure><img src="media/2026433-20240806175705845-250453538@1653254962.png" alt="img" /></figure><figure><img src="media/2026433-20240806175723985-1758687714@302037924.png" alt="img" /></figure><h4 id="_321-共轭梯度法的误差估计">3.2.1 共轭梯度法的误差估计</h4><figure><img src="media/2026433-20240806180033413-1753967389@-2132712494.png" alt="img" /></figure><blockquote><p>当系数矩阵 A 的条件数很大时 , 共轭梯度法的收敛速度可能很慢 . 条件数较小时 , 收敛很快</p></blockquote><h3 id="_33-广义极小残量法">3.3 广义极小残量法</h3><p>广义极小残量法(Gerneral Minimal RESidual法,)是求解不对称线性方程组的一种迭代法.<strong>已经成为当前求解大型稀疏非对称线性方程组的主要手段</strong>,</p><blockquote><p>本节中的范数 <formula>|| · ||</formula> 均为 2-范数 .</p></blockquote><p>设所求线性方程组为</p><formula data-block="">Ax=b</formula><p>取 <formula>x^{(0)}\in\mathbb{R}^{n}</formula> 为任一向量,令 <formula>x=x^{(0)}+z,</formula> 则上式等价于</p><formula data-block="">Az=r^{(0)},/tag{11}</formula><p>其中, <formula>r^{(0)}=b-Ax^{(0)}</formula> ,现在就只需要讨论公式(11)的求解问题</p><blockquote><p>广义极小残量法的推导过程见&lt;&lt;现代数值计算第二版&gt;&gt;p172</p></blockquote><figure><img src="media/2026433-20240806181516408-1212584043@353984697.png" alt="img" /></figure><figure><img src="media/2026433-20240806181543993-1287433527@-1978019808.png" alt="img" /></figure><h4 id="_331-广义极小残量法的收敛性">3.3.1 广义极小残量法的收敛性</h4><figure><img src="media/2026433-20240806181657467-1732963206@-335286555.png" alt="img" /></figure><h2 id="_4-预处理技术">4. 预处理技术</h2><p>由于存在浮点运算的误差 , 共轭梯度法和广义极小残量法计算得到的向量会逐渐失去正交性 , 因而都不能在 n 步之内得到原方程的精确解 . 况且 , 遇到求解大规模的线性代数方程组 , 即使能够在 n 步收敛的话 , 这个收敛速度也不能令人满意 . 预处理技术能有效地改善收敛性质并加快收敛速度 , 因而在实际使用中应用得非常广泛</p><p>预处理技术从广义上来说可以指对原方程组进行的任何显示的或者隐式的修正 , 使得该方程组通过迭代法更容易求解</p><p>简单地说 , 花比较小的代价找到一个矩阵 M, 然后用迭代法求解如下的<strong>同解线性方程组</strong>:</p><formula data-block="">M^{-1}Ax=M^{-1}b</formula><p>或</p><formula data-block="">AM^{-1}y=b,\quad x=M^{-1}y</formula><p>新得到的算法分别称为<strong>左预处理</strong>或者<strong>右预处理</strong>的迭代方法</p><p>特别地 , 如果存在矩阵L使得 <formula>M=LL^T</formula> ,计算以下同解线性方程组:</p><formula data-block="">L^{-1}AL^{-\mathrm{T}}y=L^{-1}b,\quad x=L^{-\mathrm{T}}y</formula><p>这是<strong>对称预处理方法</strong> , 特别在预处理共轭梯度方法时经常使用 ,<strong>M称为预处理矩阵</strong>. 一个好的预处理矩阵至少能够满足如下的条件:</p><ul><li>构造 M 的代价很小 ;</li><li>M 跟 A 足够接近 ;</li><li>关于 $M^{−1}$ 的线性方程组很容易求解</li></ul><p>当系数矩阵 A 的对角元非零时 , 取 M = diag(A), 我们可以得到一个最常用的预处理矩阵</p><figure><img src="media/2026433-20240806182916023-1715495401@821573268.png" alt="img" /></figure><blockquote><p>一般认为 , 如果预处理后的系数矩阵 <formula>M^{−1} A</formula> 的特征值更加聚集的话 , 不管是用共轭梯度法还是用广义极小残量法都会得到更好的收敛效果</p></blockquote><h2 id="_5-总结">5. 总结</h2><ol><li>使用各种迭代格式时 , 最主要的就是判断它的收敛性以及了解收敛速度</li><li>在实际计算中 , 对一种迭代格式 , 不必事先判断了收敛性才敢使用 , 它完全可以在计算过程中判断是否收敛</li><li>雅可比迭代与 GS 迭代的收敛域并不互相包含 , 所以<strong>不能相互代替</strong></li><li>当两者皆收敛时 , 一般来说 GS 迭代比雅可比迭代的收敛速度快 . 实用中更多的是使用 SOR 迭代,松弛因子有赖于实际经验</li><li>共轭梯度法 ( 简称 CG 法 ) 是求解系数矩阵为对称正定的线性方程组的非常有效的方法</li><li>当 Ax = b 为病态方程组时 , cond(A) 很大 ,共轭梯度法收敛缓慢 . 这时 , 可以使用预条件共轭梯度法来计算 , 往往其收敛速度大大提高</li></ol><h2 id="_6-习题">6. 习题</h2><figure><img src="media/2026433-20240808092912458-1014053701@1329445613.png" alt="img" /></figure><figure><img src="media/2026433-20240808092848342-2042697212@-543337726.png" alt="img" /></figure><figure><img src="media/2026433-20240808092950545-1669624318@1525920708.png" alt="img" /></figure><p>迭代次数2001,误差估计 <formula>||b-Ax||/||b||=nan</formula> ,不满足tol=1e-06</p><figure><img src="media/2026433-20240808094913207-2063566740@931054551.png" alt="img" /></figure><figure><img src="media/2026433-20240808095026150-864781228@796629043.png" alt="img" /></figure><pre><code class="language-py">from formu_lib import *
+import numpy as np
+A=np.array([[4,-1,0,-1,0,0],
+            [-1,4,-1,0,-1,0],
+            [0,-1,4,0,0,-1],
+            [-1,0,0,4,-1,0],
+            [0,-1,0,-1,4,-1],
+            [0,0,-1,0,-1,4]])
+b=np.array([2,1,2,2,1,2])
+
+x1,er1=conjGrad(A,b,1e-8)
+
+plotLines([list(range(len(er1))),],[er1,],[&quot;conjugate gradient error&quot;])</code></pre><figure><img src="media/2026433-20240808095553855-966736963@2045516631.png" alt="img" /></figure><div class="page-break" data-hidden=""></div><h1 id="线性方程组迭代解法的程序实现">线性方程组迭代解法的程序实现</h1><blockquote><p><a href="https://www.cnblogs.com/aksoam/p/18346473">https://www.cnblogs.com/aksoam/p/18346473</a>
+<a href="https://www.cnblogs.com/aksoam/p/18347935">https://www.cnblogs.com/aksoam/p/18347935</a></p></blockquote><h2 id="_7-jacobigssor迭代法-code">7. jacobi,GS,SOR迭代法-code</h2><pre><code class="language-python">def JacobiIter(A:np.ndarray,
+                b:np.ndarray,
+                tol:float=1e-5,
+                maxIter:int=100)-&gt;Tuple[np.ndarray,np.ndarray]:
+    &quot;&quot;&quot;使用Jacobi迭代法求解线性方程组Ax=b
+    
+    input:
+    A: np.ndarray, 系数矩阵
+    b: np.ndarray, 右端常数
+    tol: float, 误差限
+    maxIter: int, 最大迭代次数
+    
+    output:
+    x: np.ndarray, 解向量
+    errors: np.ndarray, 误差序列
+    &quot;&quot;&quot;
+    from numpy import dot
+    from numpy.linalg import norm
+    x0=np.zeros(b.shape)
+    L=-1*np.tril(A,k=-1).copy()
+    U=-1*np.triu(A,k=1).copy()
+    D=np.diag(np.diag(A)).copy()
+    Dinv=np.linalg.inv(D)
+    errors=[]
+    for i in range(maxIter):
+        x_next=dot(Dinv,(dot((L+U),x0)+b))
+        # error check
+        error=norm(b-dot(A,x_next),2)/norm(b,2)
+        errors.append(error)
+        if error&lt;tol:
+            return x_next,np.array(errors)
+        else:
+            x0=x_next
+
+def GaussIter(A:np.ndarray,
+                b:np.ndarray,
+                tol:float=1e-5,
+                maxIter:int=100)-&gt;Tuple[np.ndarray,np.ndarray]:
+    &quot;&quot;&quot;使用Gauss-Seidel迭代法求解线性方程组Ax=b
+    
+    input:
+    A: np.ndarray, 系数矩阵
+    b: np.ndarray, 右端常数
+    tol: float, 误差限
+    maxIter: int, 最大迭代次数
+    
+    output:
+    x: np.ndarray, 解向量
+    errors: np.ndarray, 误差序列
+    &quot;&quot;&quot;
+    from numpy import dot
+    from numpy.linalg import norm
+    x0=np.zeros(b.shape)
+    L=-1*np.tril(A,k=-1).copy()
+    U=-1*np.triu(A,k=1).copy()
+    D=np.diag(np.diag(A)).copy()
+    DsubLinv=np.linalg.inv(D-L)
+    errors=[]
+    for i in range(maxIter):
+        x_next=DsubLinv.dot(U).dot(x0)+DsubLinv.dot(b)
+        # error check
+        error=norm(b-dot(A,x_next),2)/norm(b,2)
+        errors.append(error)
+        if error&lt;tol:
+            return x_next,np.array(errors)
+        else:
+            x0=x_next
+
+def SORIter(A:np.ndarray,
+                b:np.ndarray,
+                w:float=1.0,
+                tol:float=1e-5,
+                maxIter:int=100)-&gt;Tuple[np.ndarray,np.ndarray]:
+    &quot;&quot;&quot;使用SOR迭代法求解线性方程组Ax=b
+    
+    input:
+    A: np.ndarray, 系数矩阵
+    b: np.ndarray, 右端常数
+    w: float, 松弛因子(0~2.0)
+    tol: float, 误差限
+    maxIter: int, 最大迭代次数
+    
+    output:
+    x: np.ndarray, 解向量
+    errors: np.ndarray, 误差序列
+    &quot;&quot;&quot;
+    from numpy import dot
+    from numpy.linalg import norm
+    x0=np.zeros(b.shape)
+    L=-1*np.tril(A,k=-1).copy()
+    U=-1*np.triu(A,k=1).copy()
+    D=np.diag(np.diag(A)).copy()
+    
+    DsubOmegaLinv=np.linalg.inv(D-w*L)
+    errors=[]
+    for i in range(maxIter):
+        x_next=DsubOmegaLinv.dot((1-w)*D+w*U).dot(x0)+w*DsubOmegaLinv.dot(b)
+        # error check
+        error=norm(b-dot(A,x_next),2)/norm(b,2)
+        errors.append(error)
+        if error&lt;tol:
+            return x_next,np.array(errors)
+        else:
+            x0=x_next</code></pre><ul><li>验证</li></ul><pre><code class="language-python">import numpy as np
+from formu_lib import *
+A=np.array([[2,-1,0],
+            [-1,3,-1],
+            [0,-1,2]])
+b=np.array([1,8,-5])
+extractVal=np.array([2,3,-1])
+
+x1,er1=JacobiIter(A,b)
+x2,er2=GaussIter(A,b)
+x3,er3=SORIter(A,b,1.2)
+
+ind1,ind2,ind3=list(range(len(er1))),list(range(len(er2))),list(range(len(er3)))
+plotLines([ind1,ind2,ind3],[er1,er2,er3],[&quot;Jacobi iter error&quot;,&quot;Gauss iter error&quot;,&quot;SOR iter error&quot;])
+
+showError(x1,extractVal)
+showError(x2,extractVal)
+showError(x3,extractVal)
+</code></pre><figure><img src="media/2026433-20240807173649270-1079419382@1293190036.png" alt="img" /></figure><pre><code class="language-python"># 雅可比迭代法
+数值解: [ 1.9999746   2.99999435 -1.0000254 ],
+精确解: [ 2  3 -1],
+误差: 9.719103983280175e-06
+# GS迭代法
+数值解: [ 1.9999619  2.9999746 -1.0000127],
+精确解: [ 2  3 -1],
+误差: 1.2701315856479742e-05
+# SOR迭代法
+数值解: [ 2.00001461  2.999993   -1.00000098],
+精确解: [ 2  3 -1],
+误差: 4.338862621105977e-06
+</code></pre><h2 id="_8-正定对称线性方程组的不定常迭代最速下降法共轭梯度法-代码">8. 正定对称线性方程组的不定常迭代:最速下降法,共轭梯度法-代码</h2><pre><code class="language-python">def SPDmethodSolve(A:np.ndarray,
+                    b:np.ndarray,
+                    tol:float=1e-5,
+                    maxIter:int=200)-&gt;Tuple[np.ndarray,np.ndarray]:
+    &quot;&quot;&quot;使用最速下降法求解线性方程组Ax=b
+    
+    input:
+    A: np.ndarray, 系数矩阵,必须是对称正定矩阵
+    b: np.ndarray, 右端常数
+    tol: float, 误差限
+    maxIter: int, 最大迭代次数
+    
+    output:
+    x: np.ndarray, 解向量
+    errors: np.ndarray, 误差序列
+    &quot;&quot;&quot;
+    from numpy import dot
+    from numpy.linalg import norm
+    x0=np.zeros(b.shape)
+    i,errors=0,[]
+    while True :
+        if i&gt;maxIter:
+            maxIter=1.5*maxIter
+            print(f&quot;迭代次数过多,自动调整为 {maxIter}&quot;)
+        # 计算残量r^k作为前进方向.
+        r=b-dot(A,x0)
+        # 计算前进距离a_k
+        a=InnerProduct(r,r)/InnerProduct(dot(A,r),r)
+        x_next=x0+a*r
+        error=norm(b-dot(A,x_next),2)/norm(b,2)
+        errors.append(error)
+        if errors[-1]&lt;tol:
+            return x_next,np.array(errors)
+        else:
+            x0=x_next
+            i+=1
+        
+def conjGrad(A:np.ndarray,
+                b:np.ndarray,
+                tol:float=1e-5,
+                maxIter:int=200)-&gt;Tuple[np.ndarray,np.ndarray]:
+    &quot;&quot;&quot;使用共轭梯度法求解线性方程组Ax=b
+    
+    input:
+    A: np.ndarray, 系数矩阵,必须是对称正定矩阵
+    b: np.ndarray, 右端常数
+    tol: float, 误差限
+    maxIter: int, 最大迭代次数
+    
+    output:
+    x: np.ndarray, 解向量
+    errors: np.ndarray, 误差序列
+    &quot;&quot;&quot;
+    from numpy import dot
+    from numpy.linalg import norm
+    # 选择初值x0,初始方向p0=r0=b-Ax0
+    x0=np.zeros(b.shape)
+    i,errors=0,[]
+    r0=b-dot(A,x0)
+    p_0=b-dot(A,x0)
+    errors.append(norm(r0,2)/norm(b,2))
+    while True :
+        if i&gt;maxIter:
+            maxIter=1.5*maxIter
+            print(f&quot;迭代次数过多,自动调整为 {maxIter}&quot;)
+        # 计算a_k,x^{k+1}=x_k+a_k*p_k
+        a_k=InnerProduct(r0,p_0)/InnerProduct(dot(A,p_0),p_0)
+        x_next=x0+a_k*p_0
+        # 计算下一步的残量
+        r_k_next=b-dot(A,x_next)
+        errors.append(norm(r_k_next,ord=2)/norm(b,2))
+        # 如果残量足够小,则停止迭代
+        if errors[-1]&lt;tol:
+            return x_next,np.array(errors)
+        else:
+            # 计算下一步的搜索方向
+            beta_k=-1*InnerProduct(r_k_next,A.dot(p_0))/InnerProduct(p_0,A.dot(p_0))
+            p_0=r_k_next+beta_k*p_0
+            x0=x_next
+            i+=1</code></pre><ul><li>验证</li></ul><figure><img src="media/2026433-20240807185739192-1981940656@-1586036151.png" alt="img" /></figure><pre><code class="language-python">from formu_lib import *
+import numpy as np
+
+A=np.array([[4,-1,0],
+            [-1,4,-1],
+            [0,-1,4]])
+b=np.array([3,2,3])
+extractVal=np.array([1,1,1])
+
+x1,er1=SPDmethodSolve(A,b,1e-6)
+x2,er2=conjGrad(A,b,1e-6)
+
+plotLines([list(range(len(er1))),list(range(len(er2)))],[er1,er2],[&quot;SPD method error&quot;,&quot;conjugate gradient error&quot;])
+
+showError(x1,extractVal)
+showError(x2,extractVal)</code></pre><figure><img src="media/2026433-20240807185851700-666921703@-490777762.png" alt="img" /></figure><pre><code class="language-python"># SPD method
+数值解: [0.99999951 0.99999951 0.99999951],
+精确解: [1 1 1],
+误差: 4.891480784863234e-07
+# conjugate gradient method
+数值解: [1. 1. 1.],
+精确解: [1 1 1],
+误差: 0.0</code></pre><h2 id="_9-数值实验">9. 数值实验</h2><figure><img src="media/2026433-20240807212603473-603877860@132920690.png" alt="img" /></figure><pre><code class="language-python">
+from formu_lib import *
+import numpy as np
+
+A=np.array([[-55,-5,12],        
+            [21,36,-13],
+            [24,7,47]])
+b=np.array([41,52,12])
+
+w=lambda t:0.1*t
+
+xs,ys,ts=[],[],[]
+for i in range(1,20):
+    _,err=SORIter(A,b,w(i))
+    xs.append(list(range(len(err+1))))
+    ys.append(err)
+    ts.append(f&quot;SOR iter error with w={w(i)}&quot;)
+    print(f&quot;i={i}&quot;)</code></pre><ul><li>w=0.1~0.5</li></ul><figure><img src="media/2026433-20240807214900849-1091495313@1428395682.png" alt="img" /></figure><ul><li>w=0.6~1.0</li></ul><figure><img src="media/2026433-20240807214944887-1381133933@-2008953263.png" alt="img" /></figure><ul><li>w=1.1~1.5</li></ul><figure><img src="media/2026433-20240807215025979-1587799542@-35136320.png" alt="img" /></figure><ul><li>w=1.6~1.9</li></ul><figure><img src="media/2026433-20240807215145357-270626028@-1799204521.png" alt="img" /></figure><p>结论:w 接近1.8时,算法就不收敛了,迭代次数越多,误差越大.</p><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://qinguoming.pages.dev/">返回 主页</a></p></div></main>
+    <aside class="margin-area" id="margin-area-right"></aside>
+  </body>
+</html>

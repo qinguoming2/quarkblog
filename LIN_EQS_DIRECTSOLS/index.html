@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta name="generator" content="Quarkdown">
+    <meta charset="UTF-8">
+    <meta name="description" content="a blog demo">
+    <meta name="author" content="qinguoming">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="quarkdown:root-path" content="..">
+    <title>blog</title>
+    <script src="../script/quarkdown.js"></script>
+    <script>const capabilities = window.quarkdownCapabilities</script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../theme/theme.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.9.0/highlightjs-line-numbers.min.js"></script>
+    <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
+    <link href="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.css" rel="stylesheet">
+    <script>capabilities.code = true;</script>
+    <link href="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.css" rel="stylesheet" integrity="sha384-5TcZemv2l/9On385z///+d7MSYlvIEw9FuZTIdZ14vJLqWphw7e7ZPuOiCHJcFCP" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.22/dist/katex.min.js" defer="true" integrity="sha384-cMkvdD8LoxVzGF/RPUKAcvmm49FQ0oxwDF3BGKtDXcEc+T1b2N+teh/OJfpU0jr6" crossorigin="anonymous"></script>
+    <script>capabilities.math = true;
+
+window.texMacros = {}</script>
+    <style>@font-face { font-family: '-503305824'; src: local('Consolas'); }
+
+body {
+    --qd-code-custom-font: '-503305824';
+    --qd-main-font-size: 12.0pt;}
+
+body.quarkdown-plain.quarkdown-plain,
+body.quarkdown-docs.quarkdown-docs {
+}
+
+body.quarkdown-slides.quarkdown-slides .reveal {
+}
+
+@page {
+    size: auto auto;
+    margin: 0;}
+
+p {
+}</style>
+    <script>prepare(new PlainDocument());</script>
+<template id="sidebar-template"><nav class="sidebar" role="doc-toc"><ol><li data-target-id="线性方程组求解---直接解法" data-depth="1"><a href="#线性方程组求解---直接解法">线性方程组求解 - 直接解法</a><ol><li data-target-id="高斯消元法" data-depth="2"><a href="#高斯消元法">高斯消元法</a></li><li data-target-id="choleski法" data-depth="2"><a href="#choleski法">Choleski法</a><ol><li data-target-id="lu分解" data-depth="3"><a href="#lu分解">LU分解</a></li><li data-target-id="求解方程组" data-depth="3"><a href="#求解方程组">求解方程组</a></li></ol></li><li data-target-id="对称矩阵的choleski分解" data-depth="2"><a href="#对称矩阵的choleski分解">对称矩阵的CHOLESKI分解</a></li><li data-target-id="对称矩阵的逆" data-depth="2"><a href="#对称矩阵的逆">对称矩阵的逆</a></li><li data-target-id="crout分解追赶法的编程实现" data-depth="2"><a href="#crout分解追赶法的编程实现">Crout分解追赶法的编程实现</a><ol><li data-target-id="python代码" data-depth="3"><a href="#python代码">Python代码</a></li></ol></li><li data-target-id="验证" data-depth="2"><a href="#验证">验证</a></li></ol></li></ol></nav>
+</template>  </head>
+  <body class="quarkdown quarkdown-plain">
+    <aside class="margin-area" id="margin-area-left"></aside>
+    <main><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://qinguoming.pages.dev/">返回 主页</a></p></div><div class="page-break" data-hidden=""></div><h1 id="线性方程组求解---直接解法">线性方程组求解 - 直接解法</h1><p>在有限元分析中,经过单元推导&mdash;&gt;组装&mdash;&gt;边界条件之后,最终求解的方程一般有形如【一般[A]的大小在1w+】:</p><formula data-block="">[A]X=b\tag{1}</formula><figure><img src="media/img-20250317162015@-24036735.png" alt="Img" /></figure><p>对于规模线性方程组的求解,直接法(如高斯消元法,Choleski 分解法等)比迭代法(如牛顿法,SOR法等)会更加受欢迎.本文介绍高斯消元法和Choleski法的数值求解方法.</p><h2 id="高斯消元法">高斯消元法</h2><p>公式1展开后如下,上标(0)表示初始值.</p><figure><img src="media/img-20250317162752@2003467329.png" alt="Img" /></figure><p>首先,消元 <formula>x_1</formula>,有:</p><figure><img src="media/img-20250317163434@1028355873.png" alt="Img" /></figure><p>将 <formula>x_1</formula> 带入剩下的公式,有:</p><figure><img src="media/img-20250317163456@1087199073.png" alt="Img" /></figure><p>接下,消元 <formula>x_2</formula> 和其余 <formula>x_p(p=3...n)</formula> .可以发现,当消元 <formula>x_k</formula> 时:</p><figure><img src="media/img-20250317163739@-599778199.png" alt="Img" /></figure><p>经过n-1次消元后,有:</p><figure><img src="media/img-20250317163818@231991787.png" alt="Img" /></figure><p>这样就可以以 <formula>x_n,x_{n-1},...,x_{1}</formula> 的顺序完成求解.</p><blockquote><p>如果每一步的消元过程中,如果对角系数 <formula>a_{11}^{(0)},a_{22}^{(1)},a_{33}^{(2)}....</formula> 出现0值,我们需要进行行变换来得到非0值.如果行变换行不通,那就说明[A]是奇异矩阵</p></blockquote><h2 id="choleski法">Choleski法</h2><p>该方法基于一个事实:任何方阵[a]都可以表示为上下三角矩阵的乘积.</p><h3 id="lu分解">LU分解</h3><p>系统方程为 <formula>[A]X=b</formula> ,[A]可以写作:</p><figure><img src="media/img-20250317164616@195761732.png" alt="Img" /></figure><figure><img src="media/img-20250317164654@308421342.png" alt="Img" /></figure><figure><img src="media/img-20250317164704@1054614244.png" alt="Img" /></figure><figure><img src="media/img-20250317164714@1083245957.png" alt="Img" /></figure><p>满足A=LU的唯一因式分解的[L],[U]可以逐个元素求得,求解顺序是:</p><figure><img src="media/img-20250317165016@908548287.png" alt="Img" /></figure><p><formula>l_{ij},u_{ij}</formula> 满足:</p><figure><img src="media/img-20250317164854@2083502144.png" alt="Img" /></figure><p>至此,完成LU分解.</p><h3 id="求解方程组">求解方程组</h3><p>将A=LU带入到[A]X=b可得:LUX=b.方程求解步骤为:</p><p>令:</p><formula data-block="">[U]\vec{X}=\vec{Z}</formula><p>其中Z满足:</p><formula data-block="">[L]\vec{Z}=\vec{b}</formula><p>展开后:</p><figure><img src="media/img-20250317165901@272662978.png" alt="Img" /></figure><p>以上,第一个式子可以求出z1,之后就可以依次求出z2,z3,....,zn【只要 <formula>l_{ii}</formula> 中没有0值】,一旦 <formula>z_i</formula> 求得后,则有:</p><figure><img src="media/img-20250317170126@-104990171.png" alt="Img" /></figure><p>类似高斯消元,以 <formula>x_n,x_{n-1},...,x_{1}</formula> 的顺序可以完成求解.</p><h2 id="对称矩阵的choleski分解">对称矩阵的CHOLESKI分解</h2><p>在大多数的有限元分析中,[A]一般是对称正定矩阵.此时,A有唯一的分解式:</p><figure><img src="media/img-20250317170545@-793680924.png" alt="Img" /></figure><p>矩阵[U]由下式确定:</p><figure><img src="media/img-20250317170631@59666050.png" alt="Img" /></figure><h2 id="对称矩阵的逆">对称矩阵的逆</h2><p>首先进行 <formula>A=U^TU</formula> 分解,然后:</p><figure><img src="media/img-20250317170817@1783027916.png" alt="Img" /></figure><p><formula>U^{-1}</formula> 满足 <formula>U^{-1}U=[I]</formula> , <formula>U^{-1}</formula> 的元素 <formula>\lambda_{ij}</formula> 满足:</p><figure><img src="media/img-20250317170852@1894920133.png" alt="Img" /></figure><p>可以看出 <formula>U^{-1}</formula> 也是上三角阵, <formula>U^{-1}</formula> 的逆为:</p><figure><img src="media/img-20250317171159@1724643682.png" alt="Img" /></figure><p>最后,A的逆为:</p><figure><img src="media/img-20250317171236@-1741052446.png" alt="Img" /></figure><h2 id="crout分解追赶法的编程实现">Crout分解追赶法的编程实现</h2><blockquote><p>涉及Crout分解、追赶法的线性方程组求解方法的Python实现.</p></blockquote><h3 id="python代码">Python代码</h3><pre><code class="language-python">def CroutLU(A:np.ndarray)-&gt;Tuple[np.ndarray,np.ndarray]:
+    &quot;&quot;&quot;Crout LU分解算法,A=LU
+    input: 
+        A (n,n) np.ndarray,方阵
+    
+    output:
+        L: (n,n) np.ndarray,下三角矩阵
+        U: (n,n) np.ndarray,上三角矩阵,对角线元素为1.0
+    usage:
+        A=np.array([[1,2,3,4],
+                [1,4,9,16],
+                [1,8,27,64],
+                [1,16,81,256]])
+        L,U=CroutLU(A)
+        print(&quot;L矩阵:\n&quot;, L)
+        print(&quot;U矩阵:\n&quot;, U)
+        # 验证分解是否正确
+        print(&quot;验证LU是否等于A:\n&quot;, np.dot(L, U))
+
+    输出:
+        L矩阵:
+        [[ 1.  0.  0.  0.]
+        [ 1.  2.  0.  0.]
+        [ 1.  6.  6.  0.]
+        [ 1. 14. 36. 24.]]
+        U矩阵:
+        [[1. 2. 3. 4.]
+        [0. 1. 3. 6.]
+        [0. 0. 1. 4.]
+        [0. 0. 0. 1.]]
+        验证LU是否等于A:
+        [[  1.   2.   3.   4.]
+        [  1.   4.   9.  16.]
+        [  1.   8.  27.  64.]
+        [  1.  16.  81. 256.]]
+    &quot;&quot;&quot;
+    row,col=A.shape
+    n=row
+    L=np.zeros((n,n))
+    U=np.zeros((n,n))
+    for k in range(n):
+        # 循环列,从k+1列到n列,i=k,...n-1
+        for i in range(k,n):
+            L[i,k]=A[i,k]-sum([L[i,s]*U[s,k] for s in range(k)])
+        
+        for j in range(k-1,n):
+            U[k,j]=(A[k,j]-sum([L[k,s]*U[s,j] for s in range(k)]))/L[k,k]
+    return L,U
+
+def LUChaseMethod(A:np.ndarray,d:np.ndarray)-&gt;np.ndarray:
+    &quot;&quot;&quot;LU分解法,追赶法求解线性方程组Ax=d
+    求解三对角矩阵A,d的线性方程组Ax=d,其中A为三对角矩阵,d为右端常数
+    &quot;&quot;&quot;
+    n=A.shape[0]
+    # x: x1,x2...xn
+    x=np.zeros(n)
+    
+    a=np.zeros(n)
+    # a:a1,a2...an
+    # b:b1...bn
+    # c:c1...cn-1
+    a[1:],b,c=np.diag(A,k=-1).copy(),np.diag(A,k=0).copy(),np.diag(A,k=1).copy()
+    
+    L,U=CroutLU(A)
+    # size: (n-1,) , u0,u1...u(n-1),u0=0
+    us=np.zeros(n)
+    us[1:]=np.diag(U,k=1).copy()
+    # size: (n,) ,ls : l1...ln
+    ls=np.diag(L,k=0).copy()
+    # size: (n-1,) , v2...vn-1
+    vs=np.diag(L,k=-1).copy()
+    # y: y0,y1...yn , y0=0
+    y=np.zeros(n+1)
+    # i=1....n-1
+    for i in range(1,n):
+        # print(f&quot;第{i}次迭代&quot;)
+        y_i_1=y[i-1]
+        a_i=a[i-1]
+        b_i=b[i-1]
+        c_i=c[i-1]
+        d_i=d[i-1]
+        u_i_1=us[i-1]
+        
+        l_i=b_i-a_i*u_i_1
+        u_i=c_i/l_i
+        y_i=(d_i-a_i*y_i_1)/l_i
+        
+        y[i]=y_i
+        ls[i-1]=l_i
+        us[i]=u_i
+    ls[-1]=b[n-1]-a[n-1]*us[n-1]
+    y[n]=(d[n-1]-y[n-1]*a[n-1])/ls[n-1]
+    
+    x[n-1]=y[n]
+    for i in range(n-2,-1,-1):
+        # xi=yi-ui*x(i+1),i=n-2...1
+        x[i]=y[i+1]-us[i+1]*x[i+1]
+    return x</code></pre><h2 id="验证">验证</h2><pre><code class="language-python">from formu_lib import *
+import numpy as np
+import matplotlib.pyplot as plt
+A=np.array([[1,2,3,4],
+            [1,4,9,16],
+            [1,8,27,64],
+            [1,16,81,256]])
+
+L,U=CroutLU(A)
+
+print(&quot;L矩阵:\n&quot;, L)
+print(&quot;U矩阵:\n&quot;, U)
+
+# 验证分解是否正确
+print(&quot;验证LU是否等于A:\n&quot;, np.dot(L, U))</code></pre><ul><li>输出:</li></ul><pre><code class="language-python">L矩阵:
+ [[ 1.  0.  0.  0.]
+ [ 1.  2.  0.  0.]
+ [ 1.  6.  6.  0.]
+ [ 1. 14. 36. 24.]]
+U矩阵:
+ [[1. 2. 3. 4.]
+ [0. 1. 3. 6.]
+ [0. 0. 1. 4.]
+ [0. 0. 0. 1.]]
+验证LU是否等于A:
+ [[  1.   2.   3.   4.]
+ [  1.   4.   9.  16.]
+ [  1.   8.  27.  64.]
+ [  1.  16.  81. 256.]]</code></pre><figure><img src="media/2026433-20240818211312600-54618999@-628491125.png" alt="img" /></figure><pre><code class="language-python">from formu_lib import *
+import numpy as np
+import matplotlib.pyplot as plt
+a=np.array([[2,-1,0,0],[-1,3,-2,0],[0,-2,4,-3],[0,0,-3,5]])
+d=np.array([6,1,-2,1])
+x=LUChaseMethod(a,d)
+print(f&quot;x={x}&quot;)
+# x=[5. 4. 3. 2.]
+</code></pre><p>答案:[5. 4. 3. 2.],ok</p><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://qinguoming.pages.dev/">返回 主页</a></p></div></main>
+    <aside class="margin-area" id="margin-area-right"></aside>
+  </body>
+</html>
