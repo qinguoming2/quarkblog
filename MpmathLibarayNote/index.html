@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta name="generator" content="Quarkdown">
+    <meta charset="UTF-8">
+    <meta name="description" content="a blog demo">
+    <meta name="author" content="qinguoming">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="quarkdown:root-path" content="..">
+    <title>blog</title>
+    <script src="../script/quarkdown.js"></script>
+    <script>const capabilities = window.quarkdownCapabilities</script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../theme/theme.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.9.0/highlightjs-line-numbers.min.js"></script>
+    <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
+    <link href="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.css" rel="stylesheet">
+    <script>capabilities.code = true;</script>
+    <style>@font-face { font-family: '-503305824'; src: local('Consolas'); }
+
+body {
+    --qd-code-custom-font: '-503305824';
+    --qd-main-font-size: 12.0pt;}
+
+body.quarkdown-plain.quarkdown-plain,
+body.quarkdown-docs.quarkdown-docs {
+}
+
+body.quarkdown-slides.quarkdown-slides .reveal {
+}
+
+@page {
+    size: auto auto;
+    margin: 0;}
+
+p {
+}</style>
+    <script>prepare(new PlainDocument());</script>
+<template id="sidebar-template"><nav class="sidebar" role="doc-toc"><ol><li data-target-id="mpmath库笔记" data-depth="1"><a href="#mpmath库笔记">Mpmath库笔记</a><ol><li data-target-id="_1-introduction" data-depth="3"><a href="#_1-introduction">1. Introduction</a></li><li data-target-id="_2-basic-features" data-depth="3"><a href="#_2-basic-features">2. BASIC FEATURES</a></li><li data-target-id="_24-实用函数" data-depth="3"><a href="#_24-实用函数">2.4 实用函数</a></li><li data-target-id="_25-plotting函数" data-depth="3"><a href="#_25-plotting函数">2.5 plotting函数</a></li><li data-target-id="_3-高级特性" data-depth="2"><a href="#_3-高级特性">3. 高级特性</a><ol><li data-target-id="_31-矩阵" data-depth="3"><a href="#_31-矩阵">3.1 矩阵</a></li></ol></li></ol></li></ol></nav>
+</template>  </head>
+  <body class="quarkdown quarkdown-plain">
+    <aside class="margin-area" id="margin-area-left"></aside>
+    <main><div class="page-break" data-hidden=""></div><h1 id="mpmath库笔记">Mpmath库笔记</h1><p>Numpy 和 MpMath 都是 Python 中常用的数学库,它们都提供了许多数学函数和工具,但它们的设计目的和实现方式有所不同. Numpy 主要用于处理大规模的数值数据,而 MpMath 则专注于高精度计算和符号计算.</p><p>虽然 Numpy 和 MpMath 的设计目的不同,但它们之间可以进行互操作.具体来说,可以将 Numpy 数组转换为 MpMath 的高精度数值类型,然后使用 MpMath 的函数进行计算.同样地,也可以将 MpMath 的数值类型转换为 Numpy 数组,然后使用 Numpy 的函数进行计算.</p><pre><code class="language-python"># import mpmath as mp
+from mpmath import *
+from icecream import ic
+mp.dps = 50         # Set precision
+print(mpf(2)**mpf(&#39;0.5&#39;))</code></pre><h3 id="_1-introduction">1. Introduction</h3><h4 id="_12-basic-usage-of-mpmath">1.2 Basic usage of mpmath</h4><p>mpmath的数值类型: mpf(real float),mpc(complex float),matrix</p><pre><code class="language-python">print(mp.dps)
+print(mp.cos(3.14))
+
+a1=mpf(4)
+a2=mpf(&#39;4.0&#39;)
+ic(a1,a2)
+a3=mpf(&quot;1.25e6&quot;)
+ic(a3)
+a4=mpf(&quot;-inf&quot;)
+ic(a4)
+
+a5=mpc(1,2)
+ic(a5)
+a6=mpc(complex(1,20))
+ic(a6)
+
+ic(a5.conjugate())  # 共轭复数
+ic(a5.real)         # 实部
+ic(a5.imag)         # 虚部</code></pre><p>Mpmath使用全局工作精度;它不跟踪单个数字的精度或准确性.执行算术运算或调用mpf()将结果舍入到当前的工作精度.工作精度由一个名为mp的上下文对象控制</p><pre><code class="language-python">print(mp)
+# Mpmath settings:
+#   mp.prec = 169               [default: 53]
+#   mp.dps = 50                 [default: 15]
+#   mp.trap_complex = False     [default: False]
+
+# prec---二进制精度
+# dps---十进制精度
+#  prec = 3.33*dps
+
+# 当创建一个新的mpf时,该值最多将与输入一样准确
+#!!警告: 将mpmath数字与Python浮点数混合使用时要小心
+mp.dps = 30
+# bad
+ic(mpf(10.8))
+
+# good
+ic(mpf(&#39;10.8&#39;))
+
+# also good
+ic(mpf(108)/mpf(10))
+
+
+# ? 然而,0.5、1.5、0.75、0.125等通常作为输入是安全的,因为它们可以用Python浮点数精确地表示</code></pre><h4 id="_13-输出格式化">1.3 输出格式化</h4><pre><code class="language-python"># 设置 mp.pretty = True 可以输出更好看的结果
+
+mp.pretty = True
+mpf(0.6)
+# output: 0.599999999999999977795539507497
+
+mp.pretty = False
+mpf(0.6)
+# output: mpf(&#39;0.599999999999999977795539507496869&#39;)</code></pre><h4 id="_14-输出的小数点位数">1.4 输出的小数点位数</h4><p>use mpmath.nstr() and mpmath.nprint() 函数.默认情况下打印数字的位数由工作精度决定.要指定要显示的位数,而不改变工作精度,</p><pre><code class="language-python">a=mpf(1)/6.0
+
+mp.nstr(a, 5)
+# output: &#39;0.16667&#39;
+
+mp.nprint(a, 10)
+# output: &#39;0.1666666667&#39;</code></pre><h3 id="_2-basic-features">2. BASIC FEATURES</h3><p>mpmath中的高级代码是作为&rdquo;上下文对象&rdquo;上的方法实现的.上下文实现算术、类型转换和其他基本操作.上下文还保存诸如精度之类的设置,并存储缓存数据.提供了一些不同的上下文(具有基本兼容的接口),以便高级算法可以与底层算法的不同实现一起使用,从而允许不同的特性和速度-精度权衡.</p><p>目前,mpmath提供了以下上下文:</p><ul><li>Arbitrary-precision arithmetic (mp)</li><li>A faster Cython-based version of mp (used by default in Sage, and currently only available there)</li><li>Arbitrary-precision interval arithmetic (iv)</li><li><strong>Double-precision arithmetic using Python&rsquo;s builtin float and complex types (fp)</strong></li></ul><h4 id="_21-arbitrary-precision-floating-point-mp">2.1  Arbitrary-precision floating-point (mp)</h4><p>mp支持任意精度,并且支持绝大多数函数,经过充分测试,充分优化.</p><h4 id="_22-arbitrary-precision-interval-arithmetic-iv">2.2 Arbitrary-precision interval arithmetic (iv)</h4><p>iv支持区间运算,但是在版本1.3.0中,iv还处于测试阶段,只支持少部分函数.</p><h4 id="_23-double-precision-arithmetic-using-pythonrsquos-builtin-float-and-complex-types-fp">2.3 Double-precision arithmetic using Python&rsquo;s builtin float and complex types (fp)</h4><p>尽管mpmath通常是为任意精度算术设计的,但许多高级算法可以很好地处理普通的Python浮点数和复数,它们使用硬件双精度(在大多数系统上,这相当于53位精度). mp object的函数会把输入转换为mpmath numbers type. fp object则是将输入转换为Python的浮点数和复数类型.<strong>当需要进行大量的函数求值(数值积分、绘图等),并且当fp算法提供足够的精度时,这可以大大提高mp算法的速度.</strong></p><p>基于以上优势,可以使用fp.func 进行运算.(<strong>使用func 或mp.func 都是mp的函数</strong>)</p><p><strong>使用fp算法计算的结果可能比使用等效精度(mp)的mp计算的结果不那么精确</strong>.(mp.prec = 53),因为后者经常使用更高的内部精度.其精度高度依赖于:</p><ul><li>for some functions, fp almost always gives 14-15 correct digits; for others, results can be accurate to only 2-3 digits or even completely wrong.</li><li>The recommended use for fp is therefore to speed up large-scale computations where accuracy can be verified in advance on a subset of the input set, or where results can be verified afterwards.</li></ul><pre><code class="language-python">fp.pretty=True
+u=fp.rand()
+
+print(u)
+# 0.6473090346719316
+
+print(type(u))
+# &lt;class &#39;float&#39;&gt;
+
+m=fp.matrix([[1,2],[3,4]])**2
+
+print(m)
+# [ 7.0  10.0]
+# [15.0  22.0]
+
+print(type(m))
+# &lt;class &#39;mpmath.matrices.matrices.matrix&#39;&gt;</code></pre><h4 id="_24-基本函数">2.4 基本函数</h4><p>fp bject 为基本函数 包装了Python的math和cmath模块.支持实数和复数,并自动为实数输入生成复数结果(数学会引发异常)</p><pre><code class="language-python">fp.sqrt(5)
+# 2.23606797749979
+
+fp.sqrt(-5)
+# 2.23606797749979j
+
+fp.sin(fp.pi/2)
+# 1.0
+
+fp.power(-2,0.5)
+# (8.659560562354934e-17+1.4142135623730951j)
+
+print(type(fp.power(-2,0.5)))
+# &lt;class &#39;complex&#39;&gt;</code></pre><h3 id="_24-实用函数">2.4 实用函数</h3><h4 id="_241-converion-and-printing">2.4.1 converion and printing</h4><pre><code class="language-python"># mp.mpmathify(x,strings=True)
+# 能够将x转换为mpf or mpc类型
+
+fp.dps=15
+fp.pretty = True
+
+mpmathify(3.5)
+# mpf(&#39;3.5&#39;)
+
+mpmathify(3+4j)
+#mpc(real=&#39;3.0&#39;, imag=&#39;4.0&#39;)
+
+mpmathify(&#39;3.5&#39;)
+# mpf(&#39;3.5&#39;)
+
+# mpmath.nstr(x,n=6,**kwargs)
+# 将mpf或mpc转换为具有n位有效数字的十进制字符串
+# nprint(x,n=6) 会直接打印nstr()的字符串结果
+
+f=mp.mpf(1.53)
+print(f)
+nprint(f,n=12)
+# 1.530000000000000026645352591
+# 1.53</code></pre><h4 id="_242-算术运算">2.4.2 算术运算</h4><p>包括加减乘除、取模、幂运算等.</p><pre><code class="language-python"># ! mpmath.fadd(x, y,**kwargs)
+# 实现x+y,返回浮点数结果.可以自定义精度和舍入模式.默认精度是工作精度,
+# kwargs中可以设置精度和舍入模式.:
+# + prec,dps(int)--设置精度; exact=True--不四舍五入.
+# + rounding(str)--设置舍入模式,可选&#39;n&#39;(default)--nearst,&#39;f&#39;--floor,&#39;c&#39;-ceiling,&#39;d&#39;-down,&#39;u&#39;-up.
+x=mp.rand()
+y=mp.rand()
+ic(x,y)
+nprint(mp.fadd(x,y,dps=5,rounding=&#39;u&#39;))
+# ic| x: mpf(&#39;0.936352251244129142275205120579475&#39;)
+#     y: mpf(&#39;0.118268786487759443295747691143063&#39;)
+# 1.05462
+
+# ! mpmath.fsub(x, y,**kwargs)
+# 实现x-y,返回浮点数结果.
+x=mp.mpf(1.53)
+y=mp.mpf(2.87)
+print(x-y)
+# -1.34000000000000007993605777301
+print(mp.fsub(x,y))
+# -1.34000000000000007993605777301
+
+# ! mpmath.fneg(x,**kwargs)
+# 实现-x,返回浮点数结果.
+print(mp.fneg(mp.mpf(2.5)))
+# -2.5
+
+# ! mpmath.fmul(x, y,**kwargs)
+# 实现x*y,返回浮点数结果.
+x=mp.mpf(2.5)
+y=mp.mpf(3.14)
+print(x*y)
+# 7.85000000000000031086244689504
+print(mp.fmul(x,y))
+# 7.85000000000000031086244689504
+
+a=mp.mpc(2,5)
+b=mp.mpc(3,4)
+print(a*b)
+# (-14.0 + 23.0j)
+print(mp.fmul(a,b))
+# (-14.0 + 23.0j)
+
+# ! mpmath.fdiv(x, y,**kwargs)
+# 实现x/y,返回浮点数结果.
+x=mp.mpf(3)
+y=mp.mpf(2)
+print(x/y)
+# 1.5
+print(mp.fdiv(x,y))
+# 1.5
+
+
+# ! mpmath.fmod(x,y)
+# Converts 𝑦 and 𝑧 to mpmath numbers and returns 𝑦 mod 𝑧. 
+# For mpmath numbers, this is equivalent to x % y.
+mp.fmod(100,3)
+# mpf(&#39;1.0&#39;)
+print(100%3)
+# 1
+
+# ! mpmath.fsum(terms,absolute=False,squared=False,**kwargs)
+# 计算一个array-like的terms的和.如果len(terms)&gt;2,这会比python内置的sum函数快很多.
+# + absolute=True--返回每一项的绝对值的总和.
+# + squared=True--返回每一项的平方的总和.
+mp.fsum([1,2,3,4,5])
+# mpf(&#39;15.0&#39;)
+
+mp.fsum([1,-2,3,-4,5],absolute=True)
+# mpf(&#39;15.0&#39;)
+mp.fsum([1,-2,3,-4,5],absolute=False)
+# mpf(&#39;3.0&#39;)
+
+mp.fsum([1,2,3,4,5],squared=True)
+# mpf(&#39;55.0&#39;)
+
+# ! mpmath.fprod(factors)
+# 计算一个array-like object的每一项的连续乘积.
+# 如: fprod([1,2,3,4,5])=1*2*3*4*5=120
+mp.fprod([1,2,3,4,5])
+# mpf(&#39;120.0&#39;)
+
+# ! mpmath.fdot(A, B=None, conjugate=False)
+# 接受两个array-like object A和B,计算A,B的点积. sum(A[i]*B[i]) ,i=0,...,len(A)-1.
+# if conjugate is True, B is conjugated before multiplication.  
+# 如: fdot([1,2,3],[4,5,6])=1*4+2*5+3*6=32
+mp.fdot([1,2,3],[4,5,6])
+# mpf(&#39;32.0&#39;)</code></pre><h4 id="_243-复数相关函数">2.4.3 复数相关函数</h4><p>fabs(x) :返回复数x的模或者实数x的绝对值.
+arg(x):返回x的相位角(以弧度表示).-pi&lt; arg(x) &lt; pi .
+sign(x) :返回x的符号,sign(x)=x/|x|.
+re(x) :返回x的实部.
+im(x) :返回x的虚部.
+conj(x) :返回x的共轭复数$\bar{x}$
+polar(x) :将复数x分解为极坐标形式(r,θ)$x=r\exp(i\theta)$
+rect(r,θ) :将极坐标形式(r,θ)转换为复数形式$x=r(\cos\theta+i\sin\theta)$</p><pre><code class="language-python">&gt;&gt;&gt; from mpmath import *
+&gt;&gt;&gt; mp.dps = 15; mp.pretty = True
+&gt;&gt;&gt; chop(rect(2, pi))
+-2.0
+&gt;&gt;&gt; rect(sqrt(2), -pi/4)
+(1.0 - 1.0j)</code></pre><h4 id="_244-处理整数和小数">2.4.4 处理整数和小数</h4><p>floor(x) : 向下取整数
+ceil(x) : 向上取整数
+nint(x) : 四舍五入取整数
+frac(x) : 返回x的小数部分,frac(x)=x-floor(x)</p><pre><code class="language-python">&gt;&gt;&gt; from mpmath import *
+&gt;&gt;&gt; mp.pretty = False
+&gt;&gt;&gt; frac(1.25)
+mpf(&#39;0.25&#39;)
+&gt;&gt;&gt; frac(3)
+mpf(&#39;0.0&#39;)
+&gt;&gt;&gt; frac(-1.25)
+mpf(&#39;0.75&#39;)</code></pre><h4 id="_245-公差和近似比较">2.4.5 公差和近似比较</h4><p>chop(x, tol=None) : 去除小的实部或者虚部,或者将接近于0的转换为精确的0,x可以是数字或者iterable.<strong>The tolerance defaults to 100*eps.</strong>
+almosteq(s, t, rel_eps=None, abs_eps=None) : 判断s-t是否小于给定的误差,rel_eps和abs_eps分别是相对误差和绝对误差.绝对误差=|s-t|,相对误差=|s-t|/max(|s|,|t|).</p><h4 id="_246-数组生成">2.4.6 数组生成</h4><p>fraction(p,q) ;给定两个整数p和q,返回分数p/q.<strong>比其他的精度更好</strong></p><pre><code class="language-python">&gt;&gt;&gt; from mpmath import *
+&gt;&gt;&gt; mp.dps = 15
+&gt;&gt;&gt; a = fraction(1,100)
+&gt;&gt;&gt; b = mpf(1)/100
+&gt;&gt;&gt; print(a); print(b)
+0.01
+0.01
+&gt;&gt;&gt; mp.dps = 30
+&gt;&gt;&gt; print(a); print(b) # a will be accurate
+0.01
+0.0100000000000000002081668171172
+&gt;&gt;&gt; mp.dps = 15</code></pre><p>rand() : 随机生成一个mpf随机数,范围在[0,1)之间.
+arrange(<em>args):返回mpf数组序列. **最后一个数不是b</em></p><ul><li>arrange(b):[0,1,2,...,x]</li><li>arrange(a,b):[a,a+1,a+2,...,x]</li></ul><blockquote><p>$b-1 \leq x &lt; b$</p></blockquote><ul><li>arrange(a,b,h):[a,a+h,a+2h,...,x]</li></ul><blockquote><p>$b-h \leq x &lt; b$</p></blockquote><pre><code class="language-python">&gt;&gt;&gt; from mpmath import *
+&gt;&gt;&gt; mp.dps = 15; mp.pretty = False
+&gt;&gt;&gt; arange(4)
+[mpf(&#39;0.0&#39;), mpf(&#39;1.0&#39;), mpf(&#39;2.0&#39;), mpf(&#39;3.0&#39;)]
+&gt;&gt;&gt; arange(1, 2, 0.25)
+[mpf(&#39;1.0&#39;), mpf(&#39;1.25&#39;), mpf(&#39;1.5&#39;), mpf(&#39;1.75&#39;)]
+&gt;&gt;&gt; arange(1, -1, -0.75)
+[mpf(&#39;1.0&#39;), mpf(&#39;0.25&#39;), mpf(&#39;-0.5&#39;)]</code></pre><p>linspace(start,end,num) :返回浮点数数组,从start到end均匀分成num个元素.默认包括end.元素之间的间隔$\Delta=(end-start)/(num-1)$</p><pre><code class="language-python">&gt;&gt;&gt; from mpmath import *
+&gt;&gt;&gt; mp.dps = 15; mp.pretty = False
+&gt;&gt;&gt; linspace(1, 4, 4)
+[mpf(&#39;1.0&#39;), mpf(&#39;2.0&#39;), mpf(&#39;3.0&#39;), mpf(&#39;4.0&#39;)]</code></pre><p>使用 endpoint=False 可以排除end.此时: 元素之间的间隔$\Delta=(end-start)/(num+1)$</p><pre><code class="language-python">&gt;&gt;&gt; linspace(1, 4, 4, endpoint=False)
+[mpf(&#39;1.0&#39;), mpf(&#39;1.75&#39;), mpf(&#39;2.5&#39;), mpf(&#39;3.25&#39;)]</code></pre><h3 id="_25-plotting函数">2.5 plotting函数</h3><p>plot([cos, sin], [-4, 4]): 绘制cos和sin函数的图像,x轴范围为[-4,4].</p><figure><img src="media/2026433-20240702104746479-1471661050@1214130346.png" alt="img" /></figure><h4 id="_251-2d-plotting">2.5.1 2D plotting</h4><blockquote><p>This function requires matplotlib (pylab).</p></blockquote><p>plot(f, xlim=[- 5, 5], ylim=None, points=200, file=None, dpi=None, singularities=[], axes=None)</p><p>给定一个函数f(x),或者一个函数序列[f1(x),f2(x),...,fn(x)],并指定x周范围xlim=[start,end],绘制2D图像</p><p>使用singularities可以在指定点,消除数值奇异或者无穷大值.例如tan函数</p><pre><code class="language-python"># 使用singularities绘制tan函数
+from mpmath import *
+plot(tan, [-2*pi, 2*pi],singularities=[-pi/2, pi/2,-1.5*pi,1.5*pi],points=10000)</code></pre><figure><img src="media/2026433-20240702110832455-1097712733@-138621580.png" alt="img" /></figure><pre><code class="language-python"># 不使用singularities绘制tan函数
+from mpmath import *
+plot(tan, [-2*pi, 2*pi],points=10000)</code></pre><figure><img src="media/2026433-20240702111018551-1498801193@1850693518.png" alt="img" /></figure><p>例如:</p><pre><code class="language-python">plot(lambda x: exp(x)*li(x), [1, 4])
+plot([fresnels, fresnelc], [-4, 4])
+plot([sqrt, cbrt], [-4, 4])
+plot(lambda t: zeta(0.5+t*j), [-20, 20])
+plot([floor, ceil, abs, sign], [-5, 5])</code></pre><figure><img src="media/2026433-20240702105540939-168924808@-846364051.png" alt="img" /></figure><figure><img src="media/2026433-20240702105716084-707872566@11539191.png" alt="img" /></figure><figure><img src="media/2026433-20240702105723086-1052394950@-280211235.png" alt="img" /></figure><figure><img src="media/2026433-20240702105752848-83980325@-769623127.png" alt="img" /></figure><figure><img src="media/2026433-20240702105800420-1891403531@629760720.png" alt="img" /></figure><h2 id="_3-高级特性">3. 高级特性</h2><h3 id="_31-矩阵">3.1 矩阵</h3><h4 id="_311-创建矩阵">3.1.1 创建矩阵</h4><p>mpmath中的矩阵是使用字典实现的.只存储非零值,因此表示稀疏矩阵的成本很低.</p><p>最简单的矩阵创建方法是使用matrix()函数,指定矩阵维度,可以得到空矩阵;<strong>也可以基于列表创建矩阵,这在根据已知numpy数组创建矩阵时很有用.</strong></p><pre><code class="language-python"># 创建空矩阵
+&gt;&gt;&gt; from mpmath import *
+&gt;&gt;&gt; mp.dps = 15; mp.pretty = False
+&gt;&gt;&gt; matrix(2)
+matrix(
+[[&#39;0.0&#39;, &#39;0.0&#39;],
+[&#39;0.0&#39;, &#39;0.0&#39;]])
+&gt;&gt;&gt; matrix(2, 3)
+matrix(
+[[&#39;0.0&#39;, &#39;0.0&#39;, &#39;0.0&#39;],
+[&#39;0.0&#39;, &#39;0.0&#39;, &#39;0.0&#39;]])
+# 基于列表创建矩阵
+&gt;&gt;&gt; matrix([[1, 2], [3, 4]])
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+[&#39;3.0&#39;, &#39;4.0&#39;]])
+&gt;&gt;&gt; mp.matrix(np.array([[1,2,5],[3,4,9]]))
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;, &#39;5.0&#39;],
+ [&#39;3.0&#39;, &#39;4.0&#39;, &#39;9.0&#39;]])
+&gt;&gt;&gt;mp.matrix(np.array([1,2,5,6]))
+matrix(
+[[&#39;1.0&#39;],
+ [&#39;2.0&#39;],
+ [&#39;5.0&#39;],
+ [&#39;6.0&#39;]])
+&gt;&gt;&gt;mp.matrix(np.array([[1,2,5,6]]))
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;, &#39;5.0&#39;, &#39;6.0&#39;]])</code></pre><p>访问matrix object的rows,cols属性可以得到矩阵的行数,列数.<strong>直接修改rows,cols可以改变矩阵的维度.(新增的元素为0,删除的元素会丢失)</strong></p><pre><code class="language-python">&gt;&gt;&gt; A = matrix(3, 2)
+&gt;&gt;&gt; A
+matrix(
+[[&#39;0.0&#39;, &#39;0.0&#39;],
+[&#39;0.0&#39;, &#39;0.0&#39;],
+[&#39;0.0&#39;, &#39;0.0&#39;]])
+&gt;&gt;&gt; A.rows
+3
+&gt;&gt;&gt; A.cols
+2
+&gt;&gt;&gt; A.rows = 2
+&gt;&gt;&gt; A
+matrix(
+[[&#39;0.0&#39;, &#39;0.0&#39;],
+[&#39;0.0&#39;, &#39;0.0&#39;]])</code></pre><p>索引矩阵元素的语法为:matrix[i,j],i表示行,j表示列.</p><pre><code class="language-python">&gt;&gt;&gt; A = matrix(2)
+&gt;&gt;&gt; A[1,1] = 1 + 1j
+&gt;&gt;&gt; print(A)
+[0.0 0.0]
+[0.0 (1.0 + 1.0j)]</code></pre><ul><li>高级方法</li></ul><p>zeros(rows, cols) : 创建rows行cols列的零矩阵
+ones(rows, cols) : 创建rows行cols列的单位矩阵
+eye(rows, cols) : 创建rows行cols列的单位矩阵
+randmatrix(rows, cols) : 创建rows行cols列的随机矩阵</p><h4 id="_312-向量">3.1.2 向量</h4><p>向量也可以使用matrix表示(rows=1 or cols=1),行,列向量的创建方法:</p><pre><code class="language-python"># 创建列向量
+&gt;&gt;&gt; from mpmath import *
+&gt;&gt;&gt; a=matrix([1,2,3])
+&gt;&gt;&gt; a
+matrix(
+[[&#39;1.0&#39;],
+ [&#39;2.0&#39;],
+ [&#39;3.0&#39;]])
+&gt;&gt;&gt; a.rows
+3
+&gt;&gt;&gt; a.cols
+1
+# 创建行向量
+&gt;&gt;&gt; b=matrix([[1,2,3]])
+&gt;&gt;&gt; b
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;, &#39;3.0&#39;]])
+&gt;&gt;&gt; b.rows
+1
+&gt;&gt;&gt; b.cols
+3</code></pre><h4 id="_313-矩阵复制">3.1.3 矩阵复制</h4><ul><li>直接打印矩阵,控制有效位数:</li></ul><pre><code class="language-python">&gt;&gt;&gt; print(randmatrix(3))
+[ 0.782963853573023 0.802057689719883 0.427895717335467]
+[0.0541876859348597 0.708243266653103 0.615134039977379]
+[ 0.856151514955773 0.544759264818486 0.686210904770947]
+&gt;&gt;&gt; nprint(randmatrix(5), 3)
+[2.07e-1 1.66e-1 5.06e-1 1.89e-1 8.29e-1]
+[6.62e-1 6.55e-1 4.47e-1 4.82e-1 2.06e-2]
+[4.33e-1 7.75e-1 6.93e-2 2.86e-1 5.71e-1]
+[1.01e-1 2.53e-1 6.13e-1 3.32e-1 2.59e-1]
+[1.56e-1 7.27e-2 6.05e-1 6.67e-2 2.79e-1]</code></pre><p>由于matrix object属于mutable,因此可以直接修改元素的值,或者使用copy()方法复制矩阵.<strong>涉及到浅拷贝,深拷贝,赋值的概念,可以参考python的相关知识.</strong></p><pre><code class="language-python"># 拷贝矩阵
+&gt;&gt;&gt; a=matrix([[1,2],[3,4]])
+&gt;&gt;&gt; a
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;4.0&#39;]])
+&gt;&gt;&gt; b=a.copy()
+&gt;&gt;&gt; b
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;4.0&#39;]])
+&gt;&gt;&gt; a[0,0]=0
+&gt;&gt;&gt; a
+matrix(
+[[&#39;0.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;4.0&#39;]])
+&gt;&gt;&gt; b
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;4.0&#39;]])
+# 直接赋值
+&gt;&gt;&gt; id(a)
+2441463350224
+&gt;&gt;&gt; b=a
+&gt;&gt;&gt; id(b)
+2441463350224   # 两个变量指向同一块内存空间
+&gt;&gt;&gt; b
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;4.0&#39;]])
+&gt;&gt;&gt; b[1,1]=100
+&gt;&gt;&gt; a
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;100.0&#39;]])
+&gt;&gt;&gt; b
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;100.0&#39;]])</code></pre><p>matrix object可以使用 tolist()方法转换为嵌套列表</p><pre><code class="language-python">&gt;&gt;&gt; a
+matrix(
+[[&#39;0.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;100.0&#39;]])
+&gt;&gt;&gt; a.tolist()
+[[mpf(&#39;0.0&#39;), mpf(&#39;2.0&#39;)], [mpf(&#39;3.0&#39;), mpf(&#39;100.0&#39;)]]
+&gt;&gt;&gt; import numpy as np
+&gt;&gt;&gt; np.array(a.tolist())
+array([[mpf(&#39;0.0&#39;), mpf(&#39;2.0&#39;)],
+       [mpf(&#39;3.0&#39;), mpf(&#39;100.0&#39;)]], dtype=object)
+&gt;&gt;&gt; np.array(a.tolist())[1,1]
+mpf(&#39;100.0&#39;)</code></pre><h4 id="_314-矩阵运算">3.1.4 矩阵运算</h4><ul><li>矩阵和实数之间的加减乘除,次幂运算(A^n)</li></ul><pre><code class="language-python">&gt;&gt;&gt; A = matrix([[1, 2], [3, 4]])
+&gt;&gt;&gt; B = matrix([[-2, 4], [5, 9]])
+# 矩阵相加
+&gt;&gt;&gt; A + B
+matrix(
+[[&#39;-1.0&#39;, &#39;6.0&#39;],
+[&#39;8.0&#39;, &#39;13.0&#39;]])
+&gt;&gt;&gt; A - B
+matrix(
+[[&#39;3.0&#39;, &#39;-2.0&#39;],
+[&#39;-2.0&#39;, &#39;-5.0&#39;]])
+# 举着相加需要注意维度的一致性
+&gt;&gt;&gt; A + ones(3)
+Traceback (most recent call last):
+File &quot;&lt;stdin&gt;&quot;, line 1, in &lt;module&gt;
+File &quot;...&quot;, line 238, in __add__
+raise ValueError(&#39;incompatible dimensions for addition&#39;)
+ValueError: incompatible dimensions for addition
+# 矩阵乘法
+&gt;&gt;&gt; A * 2
+matrix(
+[[&#39;2.0&#39;, &#39;4.0&#39;],
+[&#39;6.0&#39;, &#39;8.0&#39;]])
+&gt;&gt;&gt; A / 4
+matrix(
+[[&#39;0.25&#39;, &#39;0.5&#39;],
+[&#39;0.75&#39;, &#39;1.0&#39;]])
+&gt;&gt;&gt; A - 1
+matrix(
+[[&#39;0.0&#39;, &#39;1.0&#39;],
+[&#39;2.0&#39;, &#39;3.0&#39;]])
+</code></pre><ul><li>矩阵之间的加减乘除运算,维度必须一致,否则会报错.</li></ul><pre><code class="language-python">&gt;&gt;&gt; A * B
+matrix(
+[[&#39;8.0&#39;, &#39;22.0&#39;],
+[&#39;14.0&#39;, &#39;48.0&#39;]])
+# 行向量*列向量
+&gt;&gt;&gt; matrix([[1, 2, 3]]) * matrix([[-6], [7], [-2]])
+matrix(
+[[&#39;2.0&#39;]])
+&gt;&gt;&gt; A**2
+matrix(
+[[&#39;7.0&#39;, &#39;10.0&#39;],
+[&#39;15.0&#39;, &#39;22.0&#39;]])</code></pre><ul><li>矩阵求逆:A**(-1)</li></ul><pre><code class="language-python">&gt;&gt;&gt; A
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;4.0&#39;]])
+&gt;&gt;&gt; A**-1
+matrix(
+[[&#39;-2.0&#39;, &#39;1.0&#39;],
+ [&#39;1.5&#39;, &#39;-0.5&#39;]])
+&gt;&gt;&gt; A*A**-1
+matrix(
+[[&#39;1.0&#39;, &#39;1.0842021724855e-19&#39;],
+ [&#39;-2.16840434497101e-19&#39;, &#39;1.0&#39;]])</code></pre><ul><li>矩阵转置:A.T</li></ul><pre><code class="language-python">&gt;&gt;&gt; A
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;4.0&#39;]])
+&gt;&gt;&gt; A.T
+matrix(
+[[&#39;1.0&#39;, &#39;3.0&#39;],
+ [&#39;2.0&#39;, &#39;4.0&#39;]])</code></pre><ul><li>矩阵行列式</li></ul><p>对于一个方阵,mpmath.det(A)可以计算其行列式.</p><pre><code class="language-python">&gt;&gt;&gt; from mpmath import mp
+&gt;&gt;&gt; A = mp.matrix([[7, 2], [1.5, 3]])
+&gt;&gt;&gt; print(mp.det(A))
+18.0</code></pre><ul><li>计算范数</li></ul><p>矩阵和向量无法直接比较大小,但可以用范数(norm)来衡量矩阵和向量的大小.</p><blockquote><p>范数:将矩阵或向量映射到非负实数值,使得该值表示矩阵或向量的大小.</p></blockquote><p>mpmath.norm(x,p=2):给定x(iterable),计算x的$p范数=(\sum_{k}|x_k|^p)^{1/p},\quad 1 \leq p \leq \infty$.</p><p>特别的:如果x不是iterable,则返回absmax(x).</p><p>p=1: 绝对值范数,即$\sum_{k}|x_k|$</p><p>p=2: 二范数(标准欧几里得向量范数),即$\sqrt{\sum_{k}|x_k|^2}$</p><p>p=inf: 最大范数,即$\max{|x_k|}$</p><p>需要注意的是: 如果x是矩阵,且p=2,则返回Frobenius范数,即$\sqrt{\sum_{i,j}|A_{ij}|^2}$. <strong>对于算子矩阵规范,使用mnorm()代替</strong></p><pre><code class="language-python">&gt;&gt;&gt; A
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;4.0&#39;]])
+&gt;&gt;&gt; 1+4+9+16
+30
+&gt;&gt;&gt; sqrt(30)
+mpf(&#39;5.4772255750516612&#39;)
+&gt;&gt;&gt; norm(A,p=2)
+mpf(&#39;5.4772255750516612&#39;)</code></pre><p>mpmath.mnorm(A, p=1): 计算矩阵A的矩阵(算子)p-范数. 1.3.0版本支持p=1,inf.</p><p>特别的:</p><p>p=1: 矩阵(算子)max column sum 范数,即$max{\sum_{i} |A_{ij}|}$.</p><p>p=inf: 矩阵(算子)max row sum 范数,即$max{\sum_{j} |A_{ij}|}$.</p><p>p=&rsquo;f&rsquo;: 矩阵(算子)Frobenius范数,相当于elementwise 2-norm.<strong>Frobenius范数是谱范数的近似值</strong>,且满足:</p><figure><img src="media/2026433-20240702224632505-690026433@-278125225.png" alt="img" /></figure><blockquote><p>Frobenius范数缺乏一些范数应有的数学性质</p></blockquote><pre><code class="language-python">&gt;&gt;&gt; from mpmath import *
+&gt;&gt;&gt; mp.dps = 15; mp.pretty = False
+&gt;&gt;&gt; A = matrix([[1, -1000], [100, 50]])
+&gt;&gt;&gt; mnorm(A, 1)
+mpf(&#39;1050.0&#39;)
+&gt;&gt;&gt; mnorm(A, inf)
+mpf(&#39;1001.0&#39;)
+&gt;&gt;&gt; mnorm(A, &#39;F&#39;)
+mpf(&#39;1006.2310867787777&#39;)
+# 矩阵(算子)Frobenius范数与elementwise 2-norm的比较
+&gt;&gt;&gt; A
+matrix(
+[[&#39;1.0&#39;, &#39;2.0&#39;],
+ [&#39;3.0&#39;, &#39;4.0&#39;]])
+&gt;&gt;&gt; norm(A,p=2)
+mpf(&#39;5.4772255750516612&#39;)
+&gt;&gt;&gt; mnorm(A,p=&#39;f&#39;)
+mpf(&#39;5.4772255750516612&#39;)</code></pre><p>未完待续....2024.07.02</p></main>
+    <aside class="margin-area" id="margin-area-right"></aside>
+  </body>
+</html>

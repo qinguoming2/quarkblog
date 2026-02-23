@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta name="generator" content="Quarkdown">
+    <meta charset="UTF-8">
+    <meta name="description" content="a blog demo">
+    <meta name="author" content="qinguoming">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="quarkdown:root-path" content="..">
+    <title>blog</title>
+    <script src="../script/quarkdown.js"></script>
+    <script>const capabilities = window.quarkdownCapabilities</script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="../theme/theme.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.9.0/highlightjs-line-numbers.min.js"></script>
+    <script src="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.js"></script>
+    <link href="https://unpkg.com/highlightjs-copy/dist/highlightjs-copy.min.css" rel="stylesheet">
+    <script>capabilities.code = true;</script>
+    <style>@font-face { font-family: '-503305824'; src: local('Consolas'); }
+
+body {
+    --qd-code-custom-font: '-503305824';
+    --qd-main-font-size: 12.0pt;}
+
+body.quarkdown-plain.quarkdown-plain,
+body.quarkdown-docs.quarkdown-docs {
+}
+
+body.quarkdown-slides.quarkdown-slides .reveal {
+}
+
+@page {
+    size: auto auto;
+    margin: 0;}
+
+p {
+}</style>
+    <script>prepare(new PlainDocument());</script>
+<template id="sidebar-template"><nav class="sidebar" role="doc-toc"><ol><li data-target-id="notepyvtk文件输出" data-depth="1"><a href="#notepyvtk文件输出">Note_Py_vtk文件输出</a></li><li data-target-id="_1-vtk-文件格式" data-depth="1"><a href="#_1-vtk-文件格式">1. vtk 文件格式</a><ol><li data-target-id="_11-dataset-format--定义几何拓扑数据和关系" data-depth="2"><a href="#_11-dataset-format--定义几何拓扑数据和关系">1.1 Dataset Format _ 定义几何/拓扑数据和关系</a><ol><li data-target-id="_12-unstructured-grid" data-depth="3"><a href="#_12-unstructured-grid">1.2 Unstructured Grid</a></li><li data-target-id="_13-dataset-attribute-format-mdash--定义附着在节点或者单元上的数据" data-depth="3"><a href="#_13-dataset-attribute-format-mdash--定义附着在节点或者单元上的数据">1.3 Dataset Attribute Format &mdash;- 定义附着在节点或者单元上的数据</a></li><li data-target-id="_14-example" data-depth="3"><a href="#_14-example">1.4 example</a></li></ol></li></ol></li><li data-target-id="_2使用python将网格和数据写入vtk文件" data-depth="1"><a href="#_2使用python将网格和数据写入vtk文件">2.使用python将网格和数据写入vtk文件</a></li></ol></nav>
+</template>  </head>
+  <body class="quarkdown quarkdown-plain">
+    <aside class="margin-area" id="margin-area-left"></aside>
+    <main><div class="page-break" data-hidden=""></div><h1 id="notepyvtk文件输出">Note_Py_vtk文件输出</h1><div class="page-break" data-hidden=""></div><h1 id="_1-vtk-文件格式">1. vtk 文件格式</h1><p>根据官网进行总结</p><p>vtk文件组成:5个部分.</p><p>第一部分,第一行:表明文件版本.写&rdquo;# vtk DataFile Version 2.0&rdquo;就行</p><p>第二部分,第二行:表明标题(title).随便写.</p><p>第三部分,第三行:ASCII或者 BINARY</p><p>第四部分,开始定义dataset structure.这部分用于描述数据集的几何和拓扑结构.以关键字&ldquo;DATASET  type&rdquo;的一行开始.后续部分根据不同的dataset type,使用其他关键字/数据组合定义实际数据.</p><p>支持以下type: 
+       STRUCTURED_POINTS
+        STRUCTURED_GRID
+        UNSTRUCTURED_GRID
+        POLYDATA
+        STRUCTURED_POINTS
+        RECTILINEAR_GRID
+        FIELD
+关键字不区分大小写,可以用空格分隔.</p><p>第五部分,定义点数据或者实体数据等.称为:dataset attributes 如:
+POINT_DATA type
+&hellip;
+CELL_DATA type
+&hellip;</p><p>注意:Indices are 0-offset. Thus the first point is point id 0.;<strong>Cell types and indices are of type int</strong>; The geometry/topology description must occur prior to the data attribute description.</p><h2 id="_11-dataset-format--定义几何拓扑数据和关系">1.1 Dataset Format _ 定义几何/拓扑数据和关系</h2><p>VTK支持5种数据集格式:structured points, structured grid, rectilinear grid, unstructured grid, and polygonal data.</p><p>这里只描述非结构化网格,其他不说,用不到.</p><h3 id="_12-unstructured-grid">1.2 Unstructured Grid</h3><p>非结构化网格数据集由任何可用的单元类型的任意组合组成(比如四六面体混合).非结构化网格由点、单元格和单元格类型定义.</p><p>CELLS keyword 需要两个参数:</p><ul><li>n : the number of cells</li><li>size : the size of the cell list. The cell list size is CELLS关键字下所有整数的个数 (i.e., sum of numPoints and connectivity indices over each cell).</li></ul><p>例如:60代表的是从第一行以下所有整数的个数</p><pre><code class="language-vtk">CELLS 11 60
+8 0 1 4 3 6 7 10 9
+8 1 2 4 5 7 8 10 11
+4 6 10 9 12
+4 11 14 10 13
+6 15 16 17 14 13 12
+6 18 15 19 16 20 17
+4 22 23 20 19
+3 21 22 18
+3 22 19 18
+2 26 25
+1 24</code></pre><p>CELL_TYPES keyword需要一个参数: the number of cells n.这个参数值对应于CELLS的n参数.这个关键字的数据行,是指定每个单元格的单元类型的单个整数值</p><p>案例:定义非结构化网格的拓扑</p><pre><code class="language-py">DATASET UNSTRUCTURED_GRID
+POINTS n dataType
+p0x p0y p0z
+p1x p1y p1z
+…
+p(n-1)x p(n-1)y p(n-1)z
+
+CELLS n size
+numPoints0, i0, j0, k0, …
+numPoints1, i1, j1, k1, …
+numPoints2, i2, j2, k2, …
+…
+numPointsn-1, in-1, jn-1, kn-1, …
+
+CELL_TYPES n
+type0
+type1
+type2
+…
+typen-1</code></pre><h3 id="_13-dataset-attribute-format-mdash--定义附着在节点或者单元上的数据">1.3 Dataset Attribute Format &mdash;- 定义附着在节点或者单元上的数据</h3><p>支持以下数据集属性:</p><ul><li>标量(一到四个分量)</li><li>向量</li><li>法线</li><li>纹理坐标(1D, 2D和3D)</li><li>张量</li><li>field data</li></ul><p>此外,可以使用RGBA颜色规范定义lookup table,与标量数据关联.</p><p>定义dataset Attribute 要给定一个独特的dataName,不能有空格.一个文件中可以包含多个相同类型的dataset Attribute. For example, two different scalar fields defined on the dataset points, pressure and temperature, can be contained in the same file.</p><h4 id="_131-scalars">1.3.1 Scalars.</h4><pre><code class="language-vtk">SCALARS dataName dataType numComp
+LOOKUP_TABLE tableName
+s0
+s1
+…
+sn-1</code></pre><p>标量定义包括lookup table的指定. lookup table 是可选的,如果不指定,vtk会使用默认表(tableName指定为default);numComp选项也是可选的,如果不给定,默认为1.参数范围:1~4</p><p>color scalars( 直接映射到颜色的无符号字符值 )的定义varies depending upon the number of values (nValues) per scalar.** If the file format is ASCII, the color scalars are defined using nValues float values between (0,1). **</p><pre><code class="language-vtk">COLOR_SCALARS dataName nValues
+c00 c01 … c0(nValues-1)
+c10 c11 … c1(nValues-1)
+…
+c(n-1)0 c(n-1)1 … c(n-1)(nValues-1)
+</code></pre><h4 id="_132-lookup-table">1.3.2 Lookup Table.</h4><pre><code class="language-vtk">LOOKUP_TABLE tableName size
+r0 g0 b0 a0
+r1 g1 b1 a1
+…
+rsize-1 gsize-1 bsize-1 asize-1</code></pre><p>tableName 是表的标识,不能有空格.每一行表示rgba数组. a表示透明度, a=0时颜色透明.如果文件是ASCII格式,每个值范围为(0-1的浮点数;</p><h4 id="_133-vectors">1.3.3 Vectors.</h4><pre><code class="language-vtk">VECTORS dataName dataType
+v0x v0y v0z
+v1x v1y v1z
+…
+v(n-1)x v(n-1)y v(n-1)z</code></pre><h4 id="_134-normals">1.3.4 Normals.</h4><p>Normals are assumed normalized |n| = 1.</p><pre><code class="language-vtk">NORMALS dataName dataType
+n0x n0y n0z
+n1x n1y n1z
+…
+n(n-1)x n(n-1)y n(n-1)z</code></pre><h4 id="_135-tensors">1.3.5 Tensors.</h4><p>Currently only real-valued, symmetric tensors are supported.</p><p>TENSORS dataName dataType
+t000 t001 t002
+t010 t011 t012
+t020 t021 t022</p><p>t100 t101 t102
+t110 t111 t112
+t120 t121 t122
+…
+tn &ndash; 100 tn &ndash; 101 tn &ndash; 102
+tn &ndash; 110 tn &ndash; 111 tn &ndash; 112
+tn &ndash; 120 tn &ndash; 121 tn &ndash; 122</p><h3 id="_14-example">1.4 example</h3><pre><code class="language-vtk"># vtk DataFile Version 2.0
+Unstructured Grid Example
+ASCII
+DATASET UNSTRUCTURED_GRID
+
+POINTS 27 float
+0 0 0  1 0 0  2 0 0  0 1 0  1 1 0  2 1 0
+0 0 1  1 0 1  2 0 1  0 1 1  1 1 1  2 1 1
+0 1 2  1 1 2  2 1 2  0 1 3  1 1 3  2 1 3
+0 1 4  1 1 4  2 1 4  0 1 5  1 1 5  2 1 5
+0 1 6  1 1 6  2 1 6
+
+CELLS 11 60
+8 0 1 4 3 6 7 10 9
+8 1 2 4 5 7 8 10 11
+4 6 10 9 12
+4 11 14 10 13
+6 15 16 17 14 13 12
+6 18 15 19 16 20 17
+4 22 23 20 19
+3 21 22 18
+3 22 19 18
+2 26 25
+1 24
+
+CELL_TYPES 11
+12
+11
+10
+8
+7
+6
+9
+5
+4
+3
+1
+
+POINT_DATA 27
+SCALARS scalars float 1
+LOOKUP_TABLE default
+0.0 1.0 2.0 3.0 4.0 5.0
+6.0 7.0 8.0 9.0 10.0 11.0
+12.0 13.0 14.0 15.0 16.0 17.0
+18.0 19.0 20.0 21.0 22.0 23.0
+24.0 25.0 26.0
+
+VECTORS vectors float
+1 0 0  1 1 0  0 2 0  1 0 0  1 1 0  0 2 0
+1 0 0  1 1 0  0 2 0  1 0 0  1 1 0  0 2 0
+0 0 1  0 0 1  0 0 1  0 0 1  0 0 1  0 0 1
+0 0 1  0 0 1  0 0 1  0 0 1  0 0 1  0 0 1
+0 0 1  0 0 1  0 0 1
+
+CELL_DATA 11
+SCALARS scalars float 1
+LOOKUP_TABLE CellColors
+0.0 1.0 2.0 3.0 4.0 5.0
+6.0 7.0 8.0 9.0 10.0
+
+LOOKUP_TABLE CellColors 11
+.4 .4 1 1
+.4 1 .4 1
+.4 1 1 1
+1 .4 .4 1
+1 .4 1 1
+1 1 .4 1
+1 1 1 1
+1 .5 .5 1
+.5 1 .5 1
+.5 .5 .5 1
+1 .5 .4 1</code></pre><div class="page-break" data-hidden=""></div><h1 id="_2使用python将网格和数据写入vtk文件">2.使用python将网格和数据写入vtk文件</h1><pre><code class="language-python">def export_vtk(output_file:str,
+                nodes:np.ndarray,
+                element_Blocks:List[np.ndarray],
+                element_types:List[str],
+                point_data: Dict[str:Dict[str:np.ndarray]] = {},
+                cell_data:  Dict[str:Dict[str:np.ndarray]] = {},
+                **kwargs)-&gt;bool:
+    &quot;&quot;&quot;导出vtk格式的网格数据文件
+    inputs:
+    output_file: 输出文件名
+    nodes: 节点坐标矩阵,shape=(n,3)
+    element_Blocks: 单元列表,
+    element_types: 单元类型列表,
+    point_data: 节点数据字典.e.g. {&#39;SCALARS&#39;:{&#39;disp&#39;:disp_array,&#39;stress&#39;:stress_array},&#39;VECTORS&#39;:{&#39;velocity&#39;:velocity_array}}
+    cell_data: 单元数据字典.e.g. {&#39;SCALARS&#39;:{&#39;disp&#39;:disp_array,&#39;stress&#39;:stress_array},&#39;VECTORS&#39;:{&#39;velocity&#39;:velocity_array}}
+    &quot;&quot;&quot;
+    def cal_cell_num(element_Blocks:List[np.ndarray])-&gt;tuple:
+        cell_num,cell_piont_num=0,0
+        for _,block in enumerate(element_Blocks):
+            cell_num+=block.shape[0]
+            cell_piont_num+=block.shape[0]*(block.shape[1]+1)
+        return cell_num,cell_piont_num
+    
+    SEP=&quot;  &quot; if &#39;sep&#39;not in kwargs.keys()  else kwargs[&#39;sep&#39;]
+    
+    type_dict={&quot;beam&quot;: 3, # vtk_line, 梁单元
+                &quot;tri&quot;: 5, # vtk_triangle, 三角形单元
+                &quot;quad&quot;:9, # vtk_quad, 四边形单元
+                &quot;tet&quot;:10, # vtk_tetra, 四面体单元
+                &quot;hex&quot;:12, # vtk_hexahedron, 六面体单元
+                &quot;wedge&quot;:13, # vtk_wedge, 三棱柱单元
+                &quot;pyramid&quot;:14, # vtk_pyramid, 四棱锥单元
+                }
+    
+    f=open(output_file,&#39;w&#39;)
+    
+    # 写入文件头
+    f.write(&#39;# vtk DataFile Version 3.0\n&#39;)
+    f.write(f&#39;{kwargs[&quot;title&quot;]}\n&#39;) if &#39;title&#39; in kwargs.keys() else f.write(&#39;Finite Element Results\n&#39;)
+    f.write(&#39;ASCII\n&#39;)
+    f.write(&#39;DATASET UNSTRUCTURED_GRID\n&#39;)
+    
+    # 写入点坐标
+    f.write(f&#39;\nPOINTS {nodes.shape[0]} float\n&#39;)
+    for i in range(nodes.shape[0]):
+        f.write(SEP.join(map(str,nodes[i,:]))+&#39;\n&#39;)
+        
+    # 写入单元数据
+    n,size=cal_cell_num(element_Blocks)
+    
+    # 构造单元数据
+    f.write(f&#39;\nCELLS {n} {size}\n&#39;)
+    cells_lines,cell_type_lines=&quot;&quot;,&quot;&quot;
+    for block ,typeStr in zip(element_Blocks,element_types):
+        for i in range(block.shape[0]):
+            cells_lines+=f&quot;{block.shape[1]} &quot;+SEP.join(map(str,block[i,:]))+&#39;\n&#39;
+            cell_type_lines+=f&quot;{type_dict[typeStr]}\n&quot;
+    f.write(cells_lines)
+    
+    # 写入单元类型数据
+    f.write(f&#39;\nCELL_TYPES {n}\n&#39;)
+    f.write(cell_type_lines)
+    
+    # 写入节点数据,节点字典数据为空则跳过
+    if point_data:
+        f.write(f&#39;\nPOINT_DATA {nodes.shape[0]}\n&#39;) 
+        if &#39;SCALARS&#39; in point_data.keys():
+            for var_name,array in point_data[&#39;SCALARS&#39;].items():
+                if array.ndim==1:
+                    # 如果是一维数组,则扩展成二维数组
+                    array=array.reshape((-1,1))
+                # 标量的Ncomp=1~4
+                f.write(f&#39;SCALARS {var_name} float {array.shape[1]}\n&#39;)
+                f.write(f&#39;LOOKUP_TABLE default\n&#39;)
+                for i in range(array.shape[0]):
+                    f.write(SEP.join(map(str,array[i,:]))+&#39;\n&#39;)
+        
+        # VECTORS dataName dataType
+        # v0x v0y v0z
+        # v1x v1y v1z
+        # …
+        # v(n-1)x v(n-1)y v(n-1)z
+        if &#39;VECTORS&#39; in point_data.keys():
+            for var_name,array in point_data[&#39;VECTORS&#39;].items():
+                if array.ndim==1:
+                    # 如果是一维数组,则扩展成二维数组,向量必须是(-1,3)
+                    array=array.reshape((-1,3))
+                assert array.shape[1]==3, &quot;VECTORS data must be (-1,3) shape&quot;
+                
+                f.write(f&#39;VECTORS {var_name} float\n&#39;)
+                for i in range(array.shape[0]):
+                    f.write(SEP.join(map(str,array[i,:]))+&#39;\n&#39;)
+    else:
+        pass
+    
+    # 写入单元数据,单元字典数据为空则跳过
+    if cell_data:
+        f.write(f&#39;\nCELL_DATA {n}\n&#39;)
+        if &#39;SCALARS&#39; in cell_data.keys():
+            for var_name,array in cell_data[&#39;SCALARS&#39;].items():
+                if array.ndim==1:
+                    # 如果是一维数组,则扩展成二维数组
+                    array=array.reshape((-1,1))
+                # 标量的Ncomp=1~4
+                f.write(f&#39;SCALARS {var_name} float {array.shape[1]}\n&#39;)
+                f.write(f&#39;LOOKUP_TABLE default\n&#39;)
+                for i in range(array.shape[0]):
+                    f.write(SEP.join(map(str,array[i,:]))+&#39;\n&#39;)
+                    
+        if &#39;VECTORS&#39; in cell_data.keys():
+            for var_name,array in cell_data[&#39;VECTORS&#39;].items():
+                if array.ndim==1:
+                    # 如果是一维数组,则扩展成二维数组,向量必须是(-1,3)
+                    array=array.reshape((-1,3))
+                assert array.shape[1]==3, &quot;VECTORS data must be (-1,3) shape&quot;
+                
+                f.write(f&#39;VECTORS {var_name} float\n&#39;)
+                for i in range(array.shape[0]):
+                    f.write(SEP.join(map(str,array[i,:]))+&#39;\n&#39;)
+    else:
+        pass</code></pre></main>
+    <aside class="margin-area" id="margin-area-right"></aside>
+  </body>
+</html>
