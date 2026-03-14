@@ -7,7 +7,7 @@
     <meta name="author" content="qinguoming">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="quarkdown:root-path" content="..">
-    <title>blog</title>
+    <title>quarkblog</title>
     <script src="../script/quarkdown.js"></script>
     <script>const capabilities = window.quarkdownCapabilities</script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -78,7 +78,7 @@ p {
 *MATRIX OUTPUT, STRUCTURAL DAMPING
 
 **Use the following option to output the load matrix:
-*MATRIX OUTPUT, LOAD</code></pre><p>abaqus支持输出矩阵到xx.sim文件和xx.mtx文件中,后者是文本文件,可以用文本编辑器打开查看.矩阵从xx.sim输出到xx.mtx时文件名称为: <span class="codespan-content"><code>jobname_matrixN.mtx</code></span>,其中N是matrix generation step的编号,matrix是表示矩阵类型的四个字母标识符.</p><figure><img src="media/2026433-20240618163630589-1810529456@1864074517.png" alt="img" /></figure><p>abaqus 输出的文件内容格式有6种(后三种暂时用不到,不写):</p><ul><li>Matrix input text format</li></ul><p>这是默认的文件格式, 使用和STANDRAD相同的矩阵定义技术.这种格式不会将Abaqus node labels转换,负数或0可能作为internal node labels输出到文件中.</p><pre><code class="language-shell">*MATRIX OUTPUT, FORMAT=MATRIX INPUT</code></pre><h4 id="format-of-the-operator-matrix">Format of the operator matrix</h4><p>ABAQUS会将将稀疏矩阵数据转换成一系列逗号分隔的列表写入文本文件.在刚度,质量,阻尼矩阵文件中,一行会有5项数据,分别是:Row node label, Degree of freedom for row node,Column node label,Degree of freedom for column node,Matrix entry.</p><pre><code class="language-shell">&lt;!-- Example of matrix input text format --&gt;
+*MATRIX OUTPUT, LOAD</code></pre><p>abaqus支持输出矩阵到xx.sim文件和xx.mtx文件中,后者是文本文件,可以用文本编辑器打开查看.矩阵从xx.sim输出到xx.mtx时文件名称为: <span class="codespan-content"><code>jobname_matrixN.mtx</code></span>,其中N是matrix generation step的编号,matrix是表示矩阵类型的四个字母标识符.</p><figure><img src="media/2026433-20240618163630589-1810529456@908154286.png" alt="img" /></figure><p>abaqus 输出的文件内容格式有6种(后三种暂时用不到,不写):</p><ul><li>Matrix input text format</li></ul><p>这是默认的文件格式, 使用和STANDRAD相同的矩阵定义技术.这种格式不会将Abaqus node labels转换,负数或0可能作为internal node labels输出到文件中.</p><pre><code class="language-shell">*MATRIX OUTPUT, FORMAT=MATRIX INPUT</code></pre><h4 id="format-of-the-operator-matrix">Format of the operator matrix</h4><p>ABAQUS会将将稀疏矩阵数据转换成一系列逗号分隔的列表写入文本文件.在刚度,质量,阻尼矩阵文件中,一行会有5项数据,分别是:Row node label, Degree of freedom for row node,Column node label,Degree of freedom for column node,Matrix entry.</p><pre><code class="language-shell">&lt;!-- Example of matrix input text format --&gt;
 &lt;!-- 这是twoElem_outMatrix_STIF1.mtx文件的部分内容 --&gt;
 1,1, 1,1,  7.966023675518204e+05
 1,2, 1,1,  2.524038461538461e+05

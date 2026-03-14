@@ -7,7 +7,7 @@
     <meta name="author" content="qinguoming">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="quarkdown:root-path" content="..">
-    <title>blog</title>
+    <title>quarkblog</title>
     <script src="../script/quarkdown.js"></script>
     <script>const capabilities = window.quarkdownCapabilities</script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -41,7 +41,7 @@ p {
 </template>  </head>
   <body class="quarkdown quarkdown-plain">
     <aside class="margin-area" id="margin-area-left"></aside>
-    <main><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div><div class="page-break" data-hidden=""></div><h1 id="一次c3d4单元的debbug过程">一次C3D4单元的debbug过程</h1><p>20230326使用python编程:</p><ol><li><p>完成C3D4的类实现</p></li><li><p>完成了C3D4尽力分析的计算模板Script_for_C3D4_Static_Analysis.py</p></li><li><p>完成pyvista+tkinter的小型后处理</p></li></ol><p>使用悬臂梁模型和abaqus对比结果,发现对不上,自己的后处理显示很小. abaqus节点力1000N</p><figure><img src="media/img-20250328112443@516896300.png" alt="Img" /></figure><figure><img src="media/img-20250328112754@-1086238671.png" alt="Img" /></figure><p>自编结果:<br /><img src="media/img-20250328112731@-1146267570.png" alt="Img" /></p><p>后来提取其中一个单元的刚度矩阵发现也对不上.</p><pre><code class="language-python"># -------------可视化结果-
+    <main><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div><div class="page-break" data-hidden=""></div><h1 id="一次c3d4单元的debbug过程">一次C3D4单元的debbug过程</h1><p>20230326使用python编程:</p><ol><li><p>完成C3D4的类实现</p></li><li><p>完成了C3D4尽力分析的计算模板Script_for_C3D4_Static_Analysis.py</p></li><li><p>完成pyvista+tkinter的小型后处理</p></li></ol><p>使用悬臂梁模型和abaqus对比结果,发现对不上,自己的后处理显示很小. abaqus节点力1000N</p><figure><img src="media/img-20250328112443@-434452759.png" alt="Img" /></figure><figure><img src="media/img-20250328112754@-2039521078.png" alt="Img" /></figure><p>自编结果:<br /><img src="media/img-20250328112731@-2097453045.png" alt="Img" /></p><p>后来提取其中一个单元的刚度矩阵发现也对不上.</p><pre><code class="language-python"># -------------可视化结果-
 # ic(element_list[267].label)
 # ic(element_list[267].Ke)
 
@@ -51,7 +51,7 @@ from EF2D.tools import *
 # ic(e268_stiff)
 
 # diff=e268_stiff-element_list[267].Ke
-# imShowMat(diff,&quot;diff&quot;)</code></pre><p>使用RAO的书中的四面体单元例子:</p><figure><img src="media/img-20250328113032@-1317935383.png" alt="Img" /></figure><figure><img src="media/img-20250328113101@-519169846.png" alt="Img" /></figure><figure><img src="media/img-20250328113115@-484911505.png" alt="Img" /></figure><p>然后在验证自己的C3D4单元:</p><pre><code class="language-python">import numpy as np
+# imShowMat(diff,&quot;diff&quot;)</code></pre><p>使用RAO的书中的四面体单元例子:</p><figure><img src="media/img-20250328113032@2023732898.png" alt="Img" /></figure><figure><img src="media/img-20250328113101@-1470879609.png" alt="Img" /></figure><figure><img src="media/img-20250328113115@-1440291288.png" alt="Img" /></figure><p>然后在验证自己的C3D4单元:</p><pre><code class="language-python">import numpy as np
 from EF2D.Elements import C3D4
 import scipy.io as sio
 import matplotlib.pyplot as plt

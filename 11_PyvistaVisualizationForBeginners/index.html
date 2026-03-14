@@ -7,7 +7,7 @@
     <meta name="author" content="qinguoming">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="quarkdown:root-path" content="..">
-    <title>blog</title>
+    <title>quarkblog</title>
     <script src="../script/quarkdown.js"></script>
     <script>const capabilities = window.quarkdownCapabilities</script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -97,7 +97,7 @@ celltypes = CellType.HEXAHEDRON*np.ones(cells.shape[0],dtype=int)
 # 初始化pyvista的UnstructuredGrid对象
 grid = pv.UnstructuredGrid(cells, celltypes, points)
 # 显示网格
-grid.plot(show_edges=True, color=&#39;w&#39;, point_size=10)</code></pre><figure><img src="media/img-20250328202908@720832574.png" alt="Img" /></figure><h3 id="_2-在网格中添加显示点对象">2. 在网格中添加显示点对象</h3><p>通过突出显示点对象可以，代表约束的节点</p><pre><code class="language-shell">&quot;&quot;&quot;this script is used to visualize the point cloud of the mesh
+grid.plot(show_edges=True, color=&#39;w&#39;, point_size=10)</code></pre><figure><img src="media/img-20250328202908@887748475.png" alt="Img" /></figure><h3 id="_2-在网格中添加显示点对象">2. 在网格中添加显示点对象</h3><p>通过突出显示点对象可以，代表约束的节点</p><pre><code class="language-shell">&quot;&quot;&quot;this script is used to visualize the point cloud of the mesh
 &quot;&quot;&quot;
 import numpy as np
 import pyvista as pv
@@ -162,7 +162,7 @@ p=pv.Plotter()
 p.add_mesh(grid,show_edges=True, color=&#39;r&#39;,style=&#39;wireframe&#39;)
 # 将点云加入绘图器,并且设置点的大小和颜色
 p.add_mesh(point_cloud,color=&#39;b&#39;,point_size=15,render_points_as_spheres=True)
-p.show()</code></pre><figure><img src="media/img-20250328205520@-1845773841.png" alt="Img" /></figure><h3 id="_3-制作箭头并附加到dataset的位置">3. 制作箭头并附加到Dataset的位置</h3><pre><code class="language-shell">import pyvista as pv
+p.show()</code></pre><figure><img src="media/img-20250328205520@-1679006680.png" alt="Img" /></figure><h3 id="_3-制作箭头并附加到dataset的位置">3. 制作箭头并附加到Dataset的位置</h3><pre><code class="language-shell">import pyvista as pv
 from pyvista import examples
 mesh = examples.load_random_hills()
 arrows = mesh.glyph(
@@ -177,7 +177,7 @@ actor = pl.add_mesh(
     show_scalar_bar=False,
 )
 pl.show()
-</code></pre><figure><img src="media/img-20250328210428@-364859782.png" alt="Img" /></figure><h2 id="绘图选项">绘图选项</h2><p>pyvista的绘图接口有两种方法:</p><ul><li>使用数据对象的plot()方法</li></ul><pre><code class="language-shell">import numpy as np
+</code></pre><figure><img src="media/img-20250328210428@-193653577.png" alt="Img" /></figure><h2 id="绘图选项">绘图选项</h2><p>pyvista的绘图接口有两种方法:</p><ul><li>使用数据对象的plot()方法</li></ul><pre><code class="language-shell">import numpy as np
 import pyvista as pv
 from pyvista import CellType
 # node data
@@ -224,7 +224,7 @@ grid = pv.UnstructuredGrid(cells, celltypes, points)
 p=pv.Plotter()
 # 给plotter()添加网格和控制这个网格显示的参数
 p.add_mesh(grid,show_edges=True, color=&#39;r&#39;, point_size=10,style=&#39;wireframe&#39;,render_points_as_spheres=False)
-p.show()</code></pre><figure><img src="media/img-20250328204123@1451969679.png" alt="Img" /></figure><h2 id="点云">点云</h2><p><a href="https://docs.pyvista.org/examples/02-plot/point-clouds.html">https://docs.pyvista.org/examples/02-plot/point-clouds.html</a></p><h2 id="单元类型">单元类型</h2><figure><img src="media/img-20250328204535@739334226.png" alt="Img" /></figure><figure><img src="media/img-20250328204544@767073136.png" alt="Img" /></figure><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div></main>
+p.show()</code></pre><figure><img src="media/img-20250328204123@1622936520.png" alt="Img" /></figure><h2 id="点云">点云</h2><p><a href="https://docs.pyvista.org/examples/02-plot/point-clouds.html">https://docs.pyvista.org/examples/02-plot/point-clouds.html</a></p><h2 id="单元类型">单元类型</h2><figure><img src="media/img-20250328204535@906626927.png" alt="Img" /></figure><figure><img src="media/img-20250328204544@934101389.png" alt="Img" /></figure><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div></main>
     <aside class="margin-area" id="margin-area-right"></aside>
   </body>
 </html>

@@ -7,7 +7,7 @@
     <meta name="author" content="qinguoming">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="quarkdown:root-path" content="..">
-    <title>blog</title>
+    <title>quarkblog</title>
     <script src="../script/quarkdown.js"></script>
     <script>const capabilities = window.quarkdownCapabilities</script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -41,7 +41,7 @@ p {
 </template>  </head>
   <body class="quarkdown quarkdown-plain">
     <aside class="margin-area" id="margin-area-left"></aside>
-    <main><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div><div class="page-break" data-hidden=""></div><h1 id="abaqus材料非均匀分布定义">Abaqus材料非均匀分布定义</h1><blockquote><p><a href="https://www.cnblogs.com/aksoam/p/17600445.html">https://www.cnblogs.com/aksoam/p/17600445.html</a></p></blockquote><p>设想一种情况:在有限元分析中,一个区域或者整个网格中,每个单元的材料行为都是单独的。这时在ABAQUS中应该如何设置?</p><p>两种办法：</p><ul><li>给每个单元创建一个集合,然后一一赋予SECTION.</li><li>使用*Distribution关键字,实现空间分布的材料行为,再将SECTION属性赋予给单元。这一种方法好处是,减少后处理的压力,没有那么多的SET和SECTION</li></ul><p>两种方法对比：</p><ul><li>第一种方法可以在CAE界面中手动设置,也可以用Python脚本自动设置,但是一旦单元数量过多,就会导致CAE界面卡顿,且Python速度也不是很快。电脑性能不行的话,后处理压力比较大,因为有很多的Set,Section.</li><li>第二种方法,不支持CAE,只能修改INP文件实现。优点是后处理软件压力小点,没有那么多set</li></ul><p>下面以下面的四个实体单元为例子,分别使用两种方法,<strong>直接编写INP文件,命令行中提交计算,进行静态分析</strong></p><figure><img src="media/2026433-20230802131919385-1460819133@-1629625155.png" alt="img" /></figure><h2 id="方法一">方法一</h2><pre><code class="language-shell">*Heading
+    <main><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div><div class="page-break" data-hidden=""></div><h1 id="abaqus材料非均匀分布定义">Abaqus材料非均匀分布定义</h1><blockquote><p><a href="https://www.cnblogs.com/aksoam/p/17600445.html">https://www.cnblogs.com/aksoam/p/17600445.html</a></p></blockquote><p>设想一种情况:在有限元分析中,一个区域或者整个网格中,每个单元的材料行为都是单独的。这时在ABAQUS中应该如何设置?</p><p>两种办法：</p><ul><li>给每个单元创建一个集合,然后一一赋予SECTION.</li><li>使用*Distribution关键字,实现空间分布的材料行为,再将SECTION属性赋予给单元。这一种方法好处是,减少后处理的压力,没有那么多的SET和SECTION</li></ul><p>两种方法对比：</p><ul><li>第一种方法可以在CAE界面中手动设置,也可以用Python脚本自动设置,但是一旦单元数量过多,就会导致CAE界面卡顿,且Python速度也不是很快。电脑性能不行的话,后处理压力比较大,因为有很多的Set,Section.</li><li>第二种方法,不支持CAE,只能修改INP文件实现。优点是后处理软件压力小点,没有那么多set</li></ul><p>下面以下面的四个实体单元为例子,分别使用两种方法,<strong>直接编写INP文件,命令行中提交计算,进行静态分析</strong></p><figure><img src="media/2026433-20230802131919385-1460819133@19328.png" alt="img" /></figure><h2 id="方法一">方法一</h2><pre><code class="language-shell">*Heading
 *Preprint, echo=NO, model=NO, history=NO, contact=NO
 *Part, name=FourElem
 *Node
@@ -224,7 +224,7 @@ U,
 S, 
  
 *Output, history, variable=PRESELECT
-*End Step</code></pre><h2 id="结果对比">结果对比</h2><p>结果一致</p><figure><img src="media/2026433-20230802132938739-1520345514@602791266.png" alt="img" /></figure><h2 id="资料">资料</h2><ul><li><a href="http://130.149.89.49:2080/v2016/books/usb/default.htm">2.8.1 Distribution definition</a></li><li><a href="http://130.149.89.49:2080/v2016/books/key/default.htm">*ELASTIC</a></li><li><a href="http://130.149.89.49:2080/v2016/books/key/ch18abk23.html">*SOLID SECTION</a></li><li><a href="http://130.149.89.49:2080/v2016/books/key/default.htm">*SOLID SECTION</a></li><li><a href="http://130.149.89.49:2080/v2016/books/key/default.htm">*DISTRIBUTION TABLE</a></li><li><a href="http://130.149.89.49:2080/v2016/books/usb/default.htm">1.2.1 Input syntax rules</a></li></ul><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div></main>
+*End Step</code></pre><h2 id="结果对比">结果对比</h2><p>结果一致</p><figure><img src="media/2026433-20230802132938739-1520345514@-2058313655.png" alt="img" /></figure><h2 id="资料">资料</h2><ul><li><a href="http://130.149.89.49:2080/v2016/books/usb/default.htm">2.8.1 Distribution definition</a></li><li><a href="http://130.149.89.49:2080/v2016/books/key/default.htm">*ELASTIC</a></li><li><a href="http://130.149.89.49:2080/v2016/books/key/ch18abk23.html">*SOLID SECTION</a></li><li><a href="http://130.149.89.49:2080/v2016/books/key/default.htm">*SOLID SECTION</a></li><li><a href="http://130.149.89.49:2080/v2016/books/key/default.htm">*DISTRIBUTION TABLE</a></li><li><a href="http://130.149.89.49:2080/v2016/books/usb/default.htm">1.2.1 Input syntax rules</a></li></ul><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div></main>
     <aside class="margin-area" id="margin-area-right"></aside>
   </body>
 </html>

@@ -7,7 +7,7 @@
     <meta name="author" content="qinguoming">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="quarkdown:root-path" content="..">
-    <title>blog</title>
+    <title>quarkblog</title>
     <script src="../script/quarkdown.js"></script>
     <script>const capabilities = window.quarkdownCapabilities</script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -285,15 +285,15 @@ arrange(<em>args):返回mpf数组序列. **最后一个数不是b</em></p><ul><l
 &gt;&gt;&gt; mp.dps = 15; mp.pretty = False
 &gt;&gt;&gt; linspace(1, 4, 4)
 [mpf(&#39;1.0&#39;), mpf(&#39;2.0&#39;), mpf(&#39;3.0&#39;), mpf(&#39;4.0&#39;)]</code></pre><p>使用 endpoint=False 可以排除end.此时: 元素之间的间隔$\Delta=(end-start)/(num+1)$</p><pre><code class="language-python">&gt;&gt;&gt; linspace(1, 4, 4, endpoint=False)
-[mpf(&#39;1.0&#39;), mpf(&#39;1.75&#39;), mpf(&#39;2.5&#39;), mpf(&#39;3.25&#39;)]</code></pre><h3 id="_25-plotting函数">2.5 plotting函数</h3><p>plot([cos, sin], [-4, 4]): 绘制cos和sin函数的图像,x轴范围为[-4,4].</p><figure><img src="media/2026433-20240702104746479-1471661050@1214130346.png" alt="img" /></figure><h4 id="_251-2d-plotting">2.5.1 2D plotting</h4><blockquote><p>This function requires matplotlib (pylab).</p></blockquote><p>plot(f, xlim=[- 5, 5], ylim=None, points=200, file=None, dpi=None, singularities=[], axes=None)</p><p>给定一个函数f(x),或者一个函数序列[f1(x),f2(x),...,fn(x)],并指定x周范围xlim=[start,end],绘制2D图像</p><p>使用singularities可以在指定点,消除数值奇异或者无穷大值.例如tan函数</p><pre><code class="language-python"># 使用singularities绘制tan函数
+[mpf(&#39;1.0&#39;), mpf(&#39;1.75&#39;), mpf(&#39;2.5&#39;), mpf(&#39;3.25&#39;)]</code></pre><h3 id="_25-plotting函数">2.5 plotting函数</h3><p>plot([cos, sin], [-4, 4]): 绘制cos和sin函数的图像,x轴范围为[-4,4].</p><figure><img src="media/2026433-20240702104746479-1471661050@2131881777.png" alt="img" /></figure><h4 id="_251-2d-plotting">2.5.1 2D plotting</h4><blockquote><p>This function requires matplotlib (pylab).</p></blockquote><p>plot(f, xlim=[- 5, 5], ylim=None, points=200, file=None, dpi=None, singularities=[], axes=None)</p><p>给定一个函数f(x),或者一个函数序列[f1(x),f2(x),...,fn(x)],并指定x周范围xlim=[start,end],绘制2D图像</p><p>使用singularities可以在指定点,消除数值奇异或者无穷大值.例如tan函数</p><pre><code class="language-python"># 使用singularities绘制tan函数
 from mpmath import *
-plot(tan, [-2*pi, 2*pi],singularities=[-pi/2, pi/2,-1.5*pi,1.5*pi],points=10000)</code></pre><figure><img src="media/2026433-20240702110832455-1097712733@-138621580.png" alt="img" /></figure><pre><code class="language-python"># 不使用singularities绘制tan函数
+plot(tan, [-2*pi, 2*pi],singularities=[-pi/2, pi/2,-1.5*pi,1.5*pi],points=10000)</code></pre><figure><img src="media/2026433-20240702110832455-1097712733@779518939.png" alt="img" /></figure><pre><code class="language-python"># 不使用singularities绘制tan函数
 from mpmath import *
-plot(tan, [-2*pi, 2*pi],points=10000)</code></pre><figure><img src="media/2026433-20240702111018551-1498801193@1850693518.png" alt="img" /></figure><p>例如:</p><pre><code class="language-python">plot(lambda x: exp(x)*li(x), [1, 4])
+plot(tan, [-2*pi, 2*pi],points=10000)</code></pre><figure><img src="media/2026433-20240702111018551-1498801193@-1526633963.png" alt="img" /></figure><p>例如:</p><pre><code class="language-python">plot(lambda x: exp(x)*li(x), [1, 4])
 plot([fresnels, fresnelc], [-4, 4])
 plot([sqrt, cbrt], [-4, 4])
 plot(lambda t: zeta(0.5+t*j), [-20, 20])
-plot([floor, ceil, abs, sign], [-5, 5])</code></pre><figure><img src="media/2026433-20240702105540939-168924808@-846364051.png" alt="img" /></figure><figure><img src="media/2026433-20240702105716084-707872566@11539191.png" alt="img" /></figure><figure><img src="media/2026433-20240702105723086-1052394950@-280211235.png" alt="img" /></figure><figure><img src="media/2026433-20240702105752848-83980325@-769623127.png" alt="img" /></figure><figure><img src="media/2026433-20240702105800420-1891403531@629760720.png" alt="img" /></figure><h2 id="_3-高级特性">3. 高级特性</h2><h3 id="_31-矩阵">3.1 矩阵</h3><h4 id="_311-创建矩阵">3.1.1 创建矩阵</h4><p>mpmath中的矩阵是使用字典实现的.只存储非零值,因此表示稀疏矩阵的成本很低.</p><p>最简单的矩阵创建方法是使用matrix()函数,指定矩阵维度,可以得到空矩阵;<strong>也可以基于列表创建矩阵,这在根据已知numpy数组创建矩阵时很有用.</strong></p><pre><code class="language-python"># 创建空矩阵
+plot([floor, ceil, abs, sign], [-5, 5])</code></pre><figure><img src="media/2026433-20240702105540939-168924808@-398750618.png" alt="img" /></figure><figure><img src="media/2026433-20240702105716084-707872566@457055472.png" alt="img" /></figure><figure><img src="media/2026433-20240702105723086-1052394950@637933344.png" alt="img" /></figure><figure><img src="media/2026433-20240702105752848-83980325@1738659148.png" alt="img" /></figure><figure><img src="media/2026433-20240702105800420-1891403531@1547903287.png" alt="img" /></figure><h2 id="_3-高级特性">3. 高级特性</h2><h3 id="_31-矩阵">3.1 矩阵</h3><h4 id="_311-创建矩阵">3.1.1 创建矩阵</h4><p>mpmath中的矩阵是使用字典实现的.只存储非零值,因此表示稀疏矩阵的成本很低.</p><p>最简单的矩阵创建方法是使用matrix()函数,指定矩阵维度,可以得到空矩阵;<strong>也可以基于列表创建矩阵,这在根据已知numpy数组创建矩阵时很有用.</strong></p><pre><code class="language-python"># 创建空矩阵
 &gt;&gt;&gt; from mpmath import *
 &gt;&gt;&gt; mp.dps = 15; mp.pretty = False
 &gt;&gt;&gt; matrix(2)
@@ -492,7 +492,7 @@ matrix(
 &gt;&gt;&gt; sqrt(30)
 mpf(&#39;5.4772255750516612&#39;)
 &gt;&gt;&gt; norm(A,p=2)
-mpf(&#39;5.4772255750516612&#39;)</code></pre><p>mpmath.mnorm(A, p=1): 计算矩阵A的矩阵(算子)p-范数. 1.3.0版本支持p=1,inf.</p><p>特别的:</p><p>p=1: 矩阵(算子)max column sum 范数,即$max{\sum_{i} |A_{ij}|}$.</p><p>p=inf: 矩阵(算子)max row sum 范数,即$max{\sum_{j} |A_{ij}|}$.</p><p>p=&rsquo;f&rsquo;: 矩阵(算子)Frobenius范数,相当于elementwise 2-norm.<strong>Frobenius范数是谱范数的近似值</strong>,且满足:</p><figure><img src="media/2026433-20240702224632505-690026433@-278125225.png" alt="img" /></figure><blockquote><p>Frobenius范数缺乏一些范数应有的数学性质</p></blockquote><pre><code class="language-python">&gt;&gt;&gt; from mpmath import *
+mpf(&#39;5.4772255750516612&#39;)</code></pre><p>mpmath.mnorm(A, p=1): 计算矩阵A的矩阵(算子)p-范数. 1.3.0版本支持p=1,inf.</p><p>特别的:</p><p>p=1: 矩阵(算子)max column sum 范数,即$max{\sum_{i} |A_{ij}|}$.</p><p>p=inf: 矩阵(算子)max row sum 范数,即$max{\sum_{j} |A_{ij}|}$.</p><p>p=&rsquo;f&rsquo;: 矩阵(算子)Frobenius范数,相当于elementwise 2-norm.<strong>Frobenius范数是谱范数的近似值</strong>,且满足:</p><figure><img src="media/2026433-20240702224632505-690026433@169486160.png" alt="img" /></figure><blockquote><p>Frobenius范数缺乏一些范数应有的数学性质</p></blockquote><pre><code class="language-python">&gt;&gt;&gt; from mpmath import *
 &gt;&gt;&gt; mp.dps = 15; mp.pretty = False
 &gt;&gt;&gt; A = matrix([[1, -1000], [100, 50]])
 &gt;&gt;&gt; mnorm(A, 1)

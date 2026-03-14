@@ -7,7 +7,7 @@
     <meta name="author" content="qinguoming">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="quarkdown:root-path" content="..">
-    <title>blog</title>
+    <title>quarkblog</title>
     <script src="../script/quarkdown.js"></script>
     <script>const capabilities = window.quarkdownCapabilities</script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
@@ -41,7 +41,7 @@ p {
 </template>  </head>
   <body class="quarkdown quarkdown-plain">
     <aside class="margin-area" id="margin-area-left"></aside>
-    <main><div class="page-break" data-hidden=""></div><h1 id="matlab特征值求解-简单平面桁架">Matlab特征值求解: 简单平面桁架</h1><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div><h2 id="问题描述">问题描述</h2><figure><img src="media/image-1@122286045.png" alt="alt text" /></figure><figure><img src="media/image@-1891219335.png" alt="alt text" /></figure><h2 id="matlab计算程序">matlab计算程序</h2><pre><code class="language-shell">% 材料与几何参数
+    <main><div class="page-break" data-hidden=""></div><h1 id="matlab特征值求解-简单平面桁架">Matlab特征值求解: 简单平面桁架</h1><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div><h2 id="问题描述">问题描述</h2><figure><img src="media/image-1@269075350.png" alt="alt text" /></figure><figure><img src="media/image@741145074.png" alt="alt text" /></figure><h2 id="matlab计算程序">matlab计算程序</h2><pre><code class="language-shell">% 材料与几何参数
 E = 2.1e11;          % 弹性模量 (Pa)，钢的典型值
 A = 1e-4;            % 杆件截面积 (m²)
 density = 7.3e3;     % 材料密度 (kg/m³)，钢的密度
@@ -135,7 +135,7 @@ frequency = sqrt(diag(d)) / (2*pi); % 特征值=ω², ω=2πf
 % 按频率升序排序
 [frequency, indexf] = sort(frequency);
 d = d(:, indexf); % 重排特征值
-v = v(:, indexf); % 重排特征向量</code></pre><h2 id="计算结果">计算结果</h2><ul><li>matlab</li></ul><figure><img src="media/image-2@125535324.png" alt="" /></figure><figure><img src="media/image-3@124107999.png" alt="alt text" /></figure><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div></main>
+v = v(:, indexf); % 重排特征向量</code></pre><h2 id="计算结果">计算结果</h2><ul><li>matlab</li></ul><figure><img src="media/image-2@272365593.png" alt="" /></figure><figure><img src="media/image-3@270897304.png" alt="alt text" /></figure><div class="container fullwidth" style="justify-items: end; text-align: end;"><p><a href="https://blog.qgm1702.top/">返回 主页</a></p></div></main>
     <aside class="margin-area" id="margin-area-right"></aside>
   </body>
 </html>
